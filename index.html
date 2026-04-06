@@ -110,6 +110,7 @@ html, body {
 .tag-red { background: #FCEAEA; color: #C02020; }
 .tag-green { background: #E6F6EC; color: #1A7840; }
 .tag-gold { background: #FFF4DC; color: #8A6808; }
+.tag-purple { background: #F4EAFF; color: #7B20C0; }
 .tag-gray { background: #EDF1F8; color: #506080; }
 
 .div { height: 1px; background: #EEF2F8; margin: 8px 0; }
@@ -593,31 +594,26 @@ html, body {
         <div class="scr-body" style="padding-top:4px">
           <div class="search-bar"><span class="search-ico">🔍</span><span class="search-ph">Search ski models…</span><span style="font-size:12px;font-weight:600;color:#B22222">Filter</span></div>
           <div class="fchips" id="filterChips">
-            <div class="fc on" onclick="toggleFilter(this)">All Models</div>
-            <div class="fc" onclick="toggleFilter(this)">Men's</div>
-            <div class="fc" onclick="toggleFilter(this)">Women's</div>
-            <div class="fc" onclick="toggleFilter(this)">Powder</div>
-            <div class="fc" onclick="toggleFilter(this)">Racing</div>
-            <div class="fc" onclick="toggleFilter(this)">All-Mountain</div>
-            <div class="fc" onclick="toggleFilter(this)">Beginner</div>
+            <div class="fc on" data-filter="all" onclick="toggleCatalogFilter(this)">All Models</div>
+            <div class="fc" data-filter="mens" onclick="toggleCatalogFilter(this)">Men's</div>
+            <div class="fc" data-filter="womens" onclick="toggleCatalogFilter(this)">Women's</div>
+            <div class="fc" data-filter="junior" onclick="toggleCatalogFilter(this)">Junior</div>
+            <div class="fc" data-filter="all-mountain" onclick="toggleCatalogFilter(this)">All-Mountain</div>
+            <div class="fc" data-filter="powder" onclick="toggleCatalogFilter(this)">Powder</div>
+            <div class="fc" data-filter="racing" onclick="toggleCatalogFilter(this)">Racing</div>
+            <div class="fc" data-filter="backcountry" onclick="toggleCatalogFilter(this)">Backcountry</div>
+            <div class="fc" data-filter="freestyle" onclick="toggleCatalogFilter(this)">Freestyle</div>
+            <div class="fc" data-filter="carving" onclick="toggleCatalogFilter(this)">Carving</div>
+            <div class="fc" data-filter="beginner" onclick="toggleCatalogFilter(this)">Beginner</div>
+            <div class="fc" data-filter="under-160" onclick="toggleCatalogFilter(this)">Under 160cm</div>
+            <div class="fc" data-filter="160-179" onclick="toggleCatalogFilter(this)">160–179cm</div>
+            <div class="fc" data-filter="over-180" onclick="toggleCatalogFilter(this)">180cm+</div>
           </div>
-          <div class="sort-bar"><span class="sort-cnt">8 models available</span><span class="sort-sel">Sort: Price ↑ ▾</span></div>
-          <div class="prod-card" onclick="goTo(3)">
-            <div class="prod-img">🎿</div>
-            <div class="prod-inf"><div class="prod-name">Pack Ski Pro</div><div class="prod-tags"><span class="tag tag-navy">All-Mountain</span><span class="tag tag-gray">Intermediate+</span></div><div class="prod-sizes">170 · 177 · 184 · 191 cm</div><div class="prod-pf"><div class="prod-price">From $385/pr</div><div class="prod-arr">›</div></div></div>
+          <div class="sort-bar">
+            <span class="sort-cnt" id="catalogCount">12 models available</span>
+            <span class="sort-sel" id="sortLabel" onclick="cycleCatalogSort()">Sort: Name A–Z ▾</span>
           </div>
-          <div class="prod-card" onclick="goTo(3)" style="opacity:0.85">
-            <div class="prod-img" style="background:linear-gradient(155deg,#6B1010,#3D0A0A)">🎿</div>
-            <div class="prod-inf"><div class="prod-name">Pack Ski Race</div><div class="prod-tags"><span class="tag tag-red">Racing</span><span class="tag tag-gray">Advanced</span></div><div class="prod-sizes">177 · 184 cm</div><div class="prod-pf"><div class="prod-price">From $445/pr</div><div class="prod-arr">›</div></div></div>
-          </div>
-          <div class="prod-card" onclick="goTo(3)" style="opacity:0.85">
-            <div class="prod-img" style="background:linear-gradient(155deg,#0D4060,#071A28)">🎿</div>
-            <div class="prod-inf"><div class="prod-name">Pack Ski Powder</div><div class="prod-tags"><span class="tag tag-navy">Powder</span><span class="tag tag-green">All Levels</span></div><div class="prod-sizes">177 · 184 · 191 cm</div><div class="prod-pf"><div class="prod-price">From $395/pr</div><div class="prod-arr">›</div></div></div>
-          </div>
-          <div class="prod-card" onclick="goTo(3)" style="opacity:0.85">
-            <div class="prod-img" style="background:linear-gradient(155deg,#2D4A1A,#182810)">🎿</div>
-            <div class="prod-inf"><div class="prod-name">Pack Ski Backcountry</div><div class="prod-tags"><span class="tag tag-green">Backcountry</span><span class="tag tag-gray">Advanced</span></div><div class="prod-sizes">184 · 191 cm</div><div class="prod-pf"><div class="prod-price">From $419/pr</div><div class="prod-arr">›</div></div></div>
-          </div>
+          <div id="catalogContainer"></div>
         </div>
         <div class="bnav">
           <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
@@ -633,8 +629,8 @@ html, body {
         <div class="sb" style="background:#0C1C2E;color:rgba(255,255,255,0.65)"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
         <div class="app-hdr" style="background:#0C1C2E;padding-bottom:0"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div></div>
         <div class="prod-hero">
-          <div class="ph-img">🎿</div>
-          <div><div class="ph-name">Pack Ski Pro</div><div class="ph-sub">All-Mountain Performance Ski</div><div class="ph-tags"><span class="ph-tag">All-Mountain</span><span class="ph-tag">Intermediate+</span><span class="ph-tag">Men's / Women's</span></div></div>
+          <div class="ph-img" id="heroImg">🎿</div>
+          <div><div class="ph-name" id="heroName">Pack Ski Pro</div><div class="ph-sub" id="heroSub">All-Mountain Performance Ski</div><div class="ph-tags" id="heroTags"><span class="ph-tag">All-Mountain</span><span class="ph-tag">Intermediate+</span><span class="ph-tag">Men's / Women's</span></div></div>
         </div>
         <div class="scr-body" style="padding-top:14px">
           <div class="sec-lbl">Select Length</div>
@@ -672,7 +668,7 @@ html, body {
             <div class="div"></div>
             <div class="sum-row sum-total"><div class="sum-lbl">Subtotal</div><div class="sum-val" id="sumTotal">$5,604</div></div>
           </div>
-          <button class="btn btn-primary" onclick="goTo(4)">Add to Order &nbsp;+</button>
+          <button class="btn btn-primary" onclick="addToCart()">Add to Order &nbsp;+</button>
         </div>
       </div>
 
@@ -682,14 +678,7 @@ html, body {
         <div class="app-hdr"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div><div class="hdr-title" style="text-align:center">My Order</div><div style="font-size:11px;font-weight:600;color:#B22222;cursor:pointer">Save</div></div>
         <div class="scr-body" style="padding-top:4px">
           <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px" id="cartItemCount">2 items in cart</div>
-          <div class="cart-item" data-unit-price="467">
-            <div class="ci-hdr"><div class="ci-ico">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Pro</div><div class="ci-spec">177cm · With Bindings · Men's</div></div><div class="ci-rm">✕</div></div>
-            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(this,-1)">−</div><input class="ci-qval" type="number" value="12" min="1" oninput="onCartQtyInput(this)" onblur="onCartQtyBlur(this)"><div class="ci-qbtn" onclick="changeCartQty(this,1)">+</div></div><div class="ci-price">$5,604</div></div>
-          </div>
-          <div class="cart-item" data-unit-price="445">
-            <div class="ci-hdr"><div class="ci-ico" style="background:linear-gradient(145deg,#6B1010,#3D0A0A)">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Race</div><div class="ci-spec">184cm · Flat (No Bindings)</div></div><div class="ci-rm">✕</div></div>
-            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(this,-1)">−</div><input class="ci-qval" type="number" value="6" min="1" oninput="onCartQtyInput(this)" onblur="onCartQtyBlur(this)"><div class="ci-qbtn" onclick="changeCartQty(this,1)">+</div></div><div class="ci-price">$2,670</div></div>
-          </div>
+          <div id="cartItemsContainer"></div>
           <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt" id="discHintTxt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
           <div class="cart-totals">
             <div class="tot-row"><div class="tot-lbl" id="cartSubtotalLbl">Subtotal (18 pairs)</div><div class="tot-val" id="cartSubtotalVal">$8,274</div></div>
@@ -705,7 +694,7 @@ html, body {
         <div class="bnav">
           <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
           <div class="bni" onclick="goTo(2)"><div class="bni-ico">📋</div><div class="bni-lbl">Catalog</div></div>
-          <div class="bni"><div class="bni-ico on">🛒</div><div class="bni-lbl on">Cart (2)</div></div>
+          <div class="bni"><div class="bni-ico on">🛒</div><div class="bni-lbl on" id="cartNavBadge">Cart (2)</div></div>
           <div class="bni" onclick="goTo(7)"><div class="bni-ico">🔔</div><div class="bni-lbl">Alerts</div></div>
           <div class="bni" onclick="goTo(6)"><div class="bni-ico">👤</div><div class="bni-lbl">Profile</div></div>
         </div>
@@ -919,34 +908,107 @@ function onQtyBlur(input) {
   updateSummary();
 }
 
+// ── Cart data model ──
+let cartItems = [
+  { name: 'Pack Ski Pro', spec: '177cm · With Bindings', unitPrice: 467, qty: 12, color: null },
+  { name: 'Pack Ski Race', spec: '184cm · Flat (No Bindings)', unitPrice: 445, qty: 6, color: 'linear-gradient(145deg,#6B1010,#3D0A0A)' }
+];
+
+function renderCart() {
+  const container = document.getElementById('cartItemsContainer');
+  if (cartItems.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:32px 0 8px;color:#8898A8;font-size:13px;font-weight:500">Your cart is empty.<br><br>Browse the catalog to add items.</div>';
+  } else {
+    container.innerHTML = cartItems.map((item, i) => {
+      const lineTotal = item.unitPrice * item.qty;
+      const iconStyle = item.color ? ` style="background:${item.color}"` : '';
+      return `<div class="cart-item">
+        <div class="ci-hdr"><div class="ci-ico"${iconStyle}>🎿</div><div class="ci-det"><div class="ci-name">${item.name}</div><div class="ci-spec">${item.spec}</div></div><div class="ci-rm" onclick="removeCartItem(${i})">✕</div></div>
+        <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(${i},-1)">−</div><input class="ci-qval" type="number" value="${item.qty}" min="1" oninput="onCartQtyInput(${i},this)" onblur="onCartQtyBlur(${i},this)"><div class="ci-qbtn" onclick="changeCartQty(${i},1)">+</div></div><div class="ci-price">$${lineTotal.toLocaleString()}</div></div>
+      </div>`;
+    }).join('');
+  }
+  updateCartTotals();
+}
+
+function addToCart() {
+  const price = selectedBinding === 'bindings' ? selectedSize.bindPrice : selectedSize.flatPrice;
+  const config = selectedBinding === 'bindings' ? 'With Bindings' : 'Flat (No Bindings)';
+  const name = document.querySelector('#s4 .ph-name').textContent.trim();
+  const spec = selectedSize.label + ' · ' + config;
+
+  const existing = cartItems.find(item => item.name === name && item.spec === spec);
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cartItems.push({ name, spec, unitPrice: price, qty, color: null });
+  }
+
+  renderCart();
+  goTo(4);
+}
+
+function removeCartItem(index) {
+  cartItems.splice(index, 1);
+  renderCart();
+}
+
+function changeCartQty(index, delta) {
+  cartItems[index].qty = Math.max(1, cartItems[index].qty + delta);
+  renderCart();
+}
+
+function onCartQtyInput(index, input) {
+  const val = parseInt(input.value);
+  if (!isNaN(val) && val >= 1) {
+    cartItems[index].qty = val;
+    // update line price and totals without full re-render (preserves input focus)
+    const lineTotal = cartItems[index].unitPrice * val;
+    input.closest('.ci-qctrl').parentElement.querySelector('.ci-price').textContent = '$' + lineTotal.toLocaleString();
+    updateCartTotals();
+  }
+}
+
+function onCartQtyBlur(index, input) {
+  const val = parseInt(input.value);
+  cartItems[index].qty = isNaN(val) || val < 1 ? 1 : val;
+  renderCart();
+}
+
 function updateCartTotals() {
-  const items = document.querySelectorAll('#s5 .cart-item');
   let subtotal = 0;
   let totalPairs = 0;
-  items.forEach(item => {
-    const unitPrice = parseInt(item.dataset.unitPrice) || 0;
-    const input = item.querySelector('.ci-qval');
-    const q = Math.max(1, parseInt(input.value) || 1);
-    const lineTotal = unitPrice * q;
-    item.querySelector('.ci-price').textContent = '$' + lineTotal.toLocaleString();
-    subtotal += lineTotal;
-    totalPairs += q;
+  cartItems.forEach(item => {
+    subtotal += item.unitPrice * item.qty;
+    totalPairs += item.qty;
   });
+
+  const n = cartItems.length;
+  document.getElementById('cartItemCount').textContent = n + ' item' + (n !== 1 ? 's' : '') + ' in cart';
+  document.getElementById('cartNavBadge').textContent = 'Cart (' + n + ')';
+
+  if (n === 0) {
+    document.getElementById('discHintTxt').parentElement.style.display = 'none';
+    document.getElementById('cartSubtotalLbl').textContent = 'Subtotal (0 pairs)';
+    document.getElementById('cartSubtotalVal').textContent = '$0';
+    document.getElementById('cartDiscVal').textContent = '— Not yet eligible';
+    document.getElementById('cartTotalVal').textContent = '$0';
+    return;
+  }
 
   // Discount tiers: 1.5% at $20K, 2.5% at $40K
   let discountRate = 0;
   let discountLabel = '— Not yet eligible';
   if (subtotal >= 40000) {
     discountRate = 0.025;
-    discountLabel = '−2.5% ($' + Math.round(subtotal * discountRate).toLocaleString() + ')';
+    discountLabel = '−2.5% ($' + Math.round(subtotal * 0.025).toLocaleString() + ')';
   } else if (subtotal >= 20000) {
     discountRate = 0.015;
-    discountLabel = '−1.5% ($' + Math.round(subtotal * discountRate).toLocaleString() + ')';
+    discountLabel = '−1.5% ($' + Math.round(subtotal * 0.015).toLocaleString() + ')';
   }
-  const discountAmt = Math.round(subtotal * discountRate);
-  const total = subtotal - discountAmt;
+  const total = subtotal - Math.round(subtotal * discountRate);
 
-  // Disc hint
+  // Discount hint
   const hintEl = document.getElementById('discHintTxt');
   const hintWrap = hintEl.parentElement;
   if (subtotal >= 40000) {
@@ -964,25 +1026,6 @@ function updateCartTotals() {
   document.getElementById('cartSubtotalVal').textContent = '$' + subtotal.toLocaleString();
   document.getElementById('cartDiscVal').textContent = discountLabel;
   document.getElementById('cartTotalVal').textContent = '$' + total.toLocaleString();
-  document.getElementById('cartItemCount').textContent = items.length + ' item' + (items.length !== 1 ? 's' : '') + ' in cart';
-}
-
-function changeCartQty(btn, delta) {
-  const input = btn.parentElement.querySelector('.ci-qval');
-  const val = Math.max(1, (parseInt(input.value) || 1) + delta);
-  input.value = val;
-  updateCartTotals();
-}
-
-function onCartQtyInput(input) {
-  const val = parseInt(input.value);
-  if (!isNaN(val) && val >= 1) updateCartTotals();
-}
-
-function onCartQtyBlur(input) {
-  const val = parseInt(input.value);
-  input.value = isNaN(val) || val < 1 ? 1 : val;
-  updateCartTotals();
 }
 
 // ── Shipping selection ──
@@ -998,10 +1041,250 @@ function selectTab(el) {
   el.classList.add('on');
 }
 
-// ── Filter chips ──
-function toggleFilter(el) {
-  document.querySelectorAll('#filterChips .fc').forEach(c => c.classList.remove('on'));
-  el.classList.add('on');
+// ── Product catalog data ──
+const products = [
+  {
+    id: 'pro-m', name: "Pack Ski Pro", subtitle: "All-Mountain Performance — Men's",
+    filters: ['mens','all-mountain'],
+    tags: [{ label: 'All-Mountain', cls: 'tag-navy' }, { label: "Men's", cls: 'tag-gray' }, { label: 'Intermediate+', cls: 'tag-gray' }],
+    color: null,
+    sizes: [{ label:'163', flat:355, bind:435 },{ label:'170', flat:370, bind:452 },{ label:'177', flat:385, bind:467 },{ label:'184', flat:390, bind:472 },{ label:'191', flat:395, bind:477 }],
+    defaultSizeIdx: 2,
+  },
+  {
+    id: 'pro-w', name: "Pack Ski Pro Women's", subtitle: "All-Mountain Performance — Women's",
+    filters: ['womens','all-mountain'],
+    tags: [{ label: 'All-Mountain', cls: 'tag-navy' }, { label: "Women's", cls: 'tag-purple' }, { label: 'Intermediate+', cls: 'tag-gray' }],
+    color: 'linear-gradient(155deg,#5C1B4A,#2E0D25)',
+    sizes: [{ label:'149', flat:340, bind:420 },{ label:'156', flat:355, bind:435 },{ label:'163', flat:365, bind:447 },{ label:'170', flat:375, bind:455 },{ label:'177', flat:385, bind:465 }],
+    defaultSizeIdx: 2,
+  },
+  {
+    id: 'race-m', name: "Pack Ski Race", subtitle: "GS Race Ski — Men's",
+    filters: ['mens','racing'],
+    tags: [{ label: 'Racing', cls: 'tag-red' }, { label: "Men's", cls: 'tag-gray' }, { label: 'Advanced', cls: 'tag-gray' }],
+    color: 'linear-gradient(155deg,#6B1010,#3D0A0A)',
+    sizes: [{ label:'177', flat:445, bind:535 },{ label:'184', flat:455, bind:545 },{ label:'188', flat:460, bind:550 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'race-sl', name: "Pack Ski Race SL", subtitle: "Slalom Race Ski — Men's / Women's",
+    filters: ['mens','womens','racing'],
+    tags: [{ label: 'Racing', cls: 'tag-red' }, { label: 'Slalom', cls: 'tag-red' }, { label: 'Advanced', cls: 'tag-gray' }],
+    color: 'linear-gradient(155deg,#8B2010,#4A0A0A)',
+    sizes: [{ label:'155', flat:435, bind:525 },{ label:'160', flat:445, bind:535 },{ label:'165', flat:455, bind:545 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'powder', name: "Pack Ski Powder", subtitle: "Deep Snow Freeride Ski",
+    filters: ['mens','womens','powder'],
+    tags: [{ label: 'Powder', cls: 'tag-navy' }, { label: "Men's / Women's", cls: 'tag-gray' }, { label: 'All Levels', cls: 'tag-green' }],
+    color: 'linear-gradient(155deg,#0D4060,#071A28)',
+    sizes: [{ label:'170', flat:380, bind:462 },{ label:'177', flat:395, bind:477 },{ label:'184', flat:405, bind:487 },{ label:'191', flat:415, bind:497 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'powder-w', name: "Pack Ski Powder Women's", subtitle: "Deep Snow Freeride — Women's",
+    filters: ['womens','powder'],
+    tags: [{ label: 'Powder', cls: 'tag-navy' }, { label: "Women's", cls: 'tag-purple' }, { label: 'All Levels', cls: 'tag-green' }],
+    color: 'linear-gradient(155deg,#1A3A6B,#340D50)',
+    sizes: [{ label:'163', flat:375, bind:455 },{ label:'170', flat:385, bind:467 },{ label:'177', flat:395, bind:477 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'backcountry', name: "Pack Ski Backcountry", subtitle: "Touring & Backcountry Ski",
+    filters: ['mens','womens','backcountry'],
+    tags: [{ label: 'Backcountry', cls: 'tag-green' }, { label: "Men's / Women's", cls: 'tag-gray' }, { label: 'Advanced', cls: 'tag-gray' }],
+    color: 'linear-gradient(155deg,#2D4A1A,#182810)',
+    sizes: [{ label:'170', flat:409, bind:499 },{ label:'177', flat:419, bind:509 },{ label:'184', flat:429, bind:519 },{ label:'191', flat:439, bind:529 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'freestyle', name: "Pack Ski Freestyle", subtitle: "Park & Pipe Twin-Tip",
+    filters: ['mens','womens','freestyle'],
+    tags: [{ label: 'Freestyle', cls: 'tag-gold' }, { label: "Men's / Women's", cls: 'tag-gray' }, { label: 'Intermediate+', cls: 'tag-gray' }],
+    color: 'linear-gradient(155deg,#5C4A0A,#2E2408)',
+    sizes: [{ label:'149', flat:319, bind:399 },{ label:'156', flat:329, bind:409 },{ label:'163', flat:339, bind:419 },{ label:'170', flat:349, bind:429 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'carve', name: "Pack Ski Carve", subtitle: "Groomer Carving Ski",
+    filters: ['mens','womens','carving','beginner'],
+    tags: [{ label: 'Carving', cls: 'tag-navy' }, { label: "Men's / Women's", cls: 'tag-gray' }, { label: 'Beginner+', cls: 'tag-green' }],
+    color: 'linear-gradient(155deg,#1B3A6B,#0D1E3D)',
+    sizes: [{ label:'156', flat:329, bind:409 },{ label:'163', flat:339, bind:419 },{ label:'170', flat:349, bind:429 },{ label:'177', flat:359, bind:439 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'jr-pro', name: "Pack Ski Jr. Pro", subtitle: "Junior All-Mountain Ski",
+    filters: ['junior','all-mountain','beginner'],
+    tags: [{ label: 'Junior', cls: 'tag-green' }, { label: 'All-Mountain', cls: 'tag-navy' }, { label: 'Beginner+', cls: 'tag-green' }],
+    color: 'linear-gradient(155deg,#1A5C3A,#0D2E1C)',
+    sizes: [{ label:'120', flat:219, bind:299 },{ label:'130', flat:229, bind:309 },{ label:'140', flat:239, bind:319 },{ label:'150', flat:249, bind:329 }],
+    defaultSizeIdx: 2,
+  },
+  {
+    id: 'big-mtn', name: "Pack Ski Big Mountain", subtitle: "Freeride & Powder Charger — Men's",
+    filters: ['mens','powder','backcountry'],
+    tags: [{ label: 'Freeride', cls: 'tag-navy' }, { label: "Men's", cls: 'tag-gray' }, { label: 'Advanced', cls: 'tag-gray' }],
+    color: 'linear-gradient(155deg,#1A3A5C,#0A1E30)',
+    sizes: [{ label:'184', flat:415, bind:505 },{ label:'191', flat:425, bind:515 },{ label:'198', flat:435, bind:525 }],
+    defaultSizeIdx: 1,
+  },
+  {
+    id: 'comp', name: "Pack Ski Comp", subtitle: "Competition GS / Super-G Ski",
+    filters: ['mens','womens','racing'],
+    tags: [{ label: 'Competition', cls: 'tag-red' }, { label: "Men's / Women's", cls: 'tag-gray' }, { label: 'Expert', cls: 'tag-red' }],
+    color: 'linear-gradient(155deg,#4A0808,#200404)',
+    sizes: [{ label:'180', flat:499, bind:599 },{ label:'188', flat:509, bind:609 },{ label:'195', flat:519, bind:619 },{ label:'202', flat:529, bind:629 }],
+    defaultSizeIdx: 1,
+  },
+];
+
+// Filter groups — AND across groups, OR within each group
+const filterGroups = {
+  gender:  ['mens','womens','junior'],
+  terrain: ['all-mountain','powder','racing','backcountry','freestyle','carving'],
+  level:   ['beginner'],
+  size:    ['under-160','160-179','over-180'],
+};
+let activeFilters = new Set();
+
+function getFilterGroup(f) {
+  for (const [g, list] of Object.entries(filterGroups)) if (list.includes(f)) return g;
+  return null;
+}
+
+function productMatchesFilters(p) {
+  if (activeFilters.size === 0) return true;
+  const byGroup = {};
+  activeFilters.forEach(f => {
+    const g = getFilterGroup(f);
+    if (g) (byGroup[g] = byGroup[g] || []).push(f);
+  });
+  return Object.entries(byGroup).every(([group, filters]) => {
+    if (group === 'size') {
+      const sizes = p.sizes.map(s => parseInt(s.label));
+      return filters.some(f => {
+        if (f === 'under-160') return sizes.some(s => s < 160);
+        if (f === '160-179')   return sizes.some(s => s >= 160 && s <= 179);
+        if (f === 'over-180')  return sizes.some(s => s >= 180);
+        return false;
+      });
+    }
+    return filters.some(f => p.filters.includes(f));
+  });
+}
+
+function toggleCatalogFilter(el) {
+  const f = el.dataset.filter;
+  const allChip = document.querySelector('#filterChips .fc[data-filter="all"]');
+  if (f === 'all') {
+    activeFilters.clear();
+    document.querySelectorAll('#filterChips .fc').forEach(c => c.classList.remove('on'));
+    el.classList.add('on');
+    renderCatalog();
+    return;
+  }
+  allChip.classList.remove('on');
+  if (el.classList.contains('on')) {
+    el.classList.remove('on');
+    activeFilters.delete(f);
+  } else {
+    el.classList.add('on');
+    activeFilters.add(f);
+  }
+  if (activeFilters.size === 0) allChip.classList.add('on');
+  renderCatalog();
+}
+
+// ── Sort ──
+const sortModes = [
+  { key: 'name-asc',    label: 'Name A–Z' },
+  { key: 'price-asc',   label: 'Price ↑' },
+  { key: 'price-desc',  label: 'Price ↓' },
+  { key: 'length-asc',  label: 'Length ↑' },
+  { key: 'length-desc', label: 'Length ↓' },
+];
+let currentSortIdx = 0;
+
+function cycleCatalogSort() {
+  currentSortIdx = (currentSortIdx + 1) % sortModes.length;
+  document.getElementById('sortLabel').textContent = 'Sort: ' + sortModes[currentSortIdx].label + ' ▾';
+  renderCatalog();
+}
+
+function sortedProducts(list) {
+  const key = sortModes[currentSortIdx].key;
+  return [...list].sort((a, b) => {
+    if (key === 'name-asc')    return a.name.localeCompare(b.name);
+    if (key === 'price-asc')   return Math.min(...a.sizes.map(s => s.flat)) - Math.min(...b.sizes.map(s => s.flat));
+    if (key === 'price-desc')  return Math.min(...b.sizes.map(s => s.flat)) - Math.min(...a.sizes.map(s => s.flat));
+    if (key === 'length-asc')  return Math.min(...a.sizes.map(s => parseInt(s.label))) - Math.min(...b.sizes.map(s => parseInt(s.label)));
+    if (key === 'length-desc') return Math.max(...b.sizes.map(s => parseInt(s.label))) - Math.max(...a.sizes.map(s => parseInt(s.label)));
+    return 0;
+  });
+}
+
+function renderCatalog() {
+  const filtered = sortedProducts(products.filter(productMatchesFilters));
+  document.getElementById('catalogCount').textContent = filtered.length + ' model' + (filtered.length !== 1 ? 's' : '') + ' available';
+  const container = document.getElementById('catalogContainer');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:32px 0;color:#8898A8;font-size:13px;font-weight:500">No models match your filters.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(p => {
+    const minPrice = Math.min(...p.sizes.map(s => s.flat));
+    const sizeStr = p.sizes.map(s => s.label).join(' · ') + ' cm';
+    const imgStyle = p.color ? ` style="background:${p.color}"` : '';
+    const tagsHtml = p.tags.map(t => `<span class="tag ${t.cls}">${t.label}</span>`).join('');
+    return `<div class="prod-card" onclick="openProduct('${p.id}')">
+      <div class="prod-img"${imgStyle}>🎿</div>
+      <div class="prod-inf"><div class="prod-name">${p.name}</div><div class="prod-tags">${tagsHtml}</div><div class="prod-sizes">${sizeStr}</div><div class="prod-pf"><div class="prod-price">From $${minPrice}/pr</div><div class="prod-arr">›</div></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ── Open product → populate order customization screen ──
+let currentProduct = null;
+
+function openProduct(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  currentProduct = p;
+
+  document.getElementById('heroName').textContent = p.name;
+  document.getElementById('heroSub').textContent = p.subtitle;
+  document.getElementById('heroTags').innerHTML = p.tags.map(t => `<span class="ph-tag">${t.label}</span>`).join('');
+  const heroImg = document.getElementById('heroImg');
+  heroImg.style.background = p.color || '';
+
+  const defaultIdx = p.defaultSizeIdx || 0;
+  const defSize = p.sizes[defaultIdx];
+  document.getElementById('sizeGrid').innerHTML = p.sizes.map((s, i) =>
+    `<div class="sz-btn${i === defaultIdx ? ' sel' : ''}" onclick="selectSize(this,${s.flat},${s.bind})"><div class="sz-v">${s.label}</div><div class="sz-u">cm</div></div>`
+  ).join('');
+
+  // Reset binding to "With Bindings"
+  const bindOpts = document.querySelectorAll('.bind-opt');
+  bindOpts.forEach(b => {
+    b.classList.remove('sel');
+    b.querySelector('.radio').classList.remove('sel');
+    b.querySelector('.radio').innerHTML = '<div></div>';
+  });
+  bindOpts[1].classList.add('sel');
+  bindOpts[1].querySelector('.radio').classList.add('sel');
+  bindOpts[1].querySelector('.radio').innerHTML = '<div class="radio-dot"></div>';
+
+  selectedSize = { label: defSize.label + 'cm', flatPrice: defSize.flat, bindPrice: defSize.bind };
+  selectedBinding = 'bindings';
+  qty = 4;
+  document.getElementById('qtyVal').value = qty;
+  document.getElementById('flatPrice').textContent = '$' + defSize.flat;
+  document.getElementById('bindPrice').textContent = '$' + defSize.bind;
+  updateSummary();
+  goTo(3);
 }
 
 // ── Account type toggle (login) ──
@@ -1072,6 +1355,8 @@ document.addEventListener('keydown', e => {
 // Init
 renderDots();
 renderAnnotations(0);
+renderCart();
+renderCatalog();
 </script>
 </body>
 </html>
