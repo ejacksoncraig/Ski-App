@@ -681,22 +681,22 @@ html, body {
         <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
         <div class="app-hdr"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div><div class="hdr-title" style="text-align:center">My Order</div><div style="font-size:11px;font-weight:600;color:#B22222;cursor:pointer">Save</div></div>
         <div class="scr-body" style="padding-top:4px">
-          <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px">2 items in cart</div>
-          <div class="cart-item">
+          <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px" id="cartItemCount">2 items in cart</div>
+          <div class="cart-item" data-unit-price="467">
             <div class="ci-hdr"><div class="ci-ico">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Pro</div><div class="ci-spec">177cm · With Bindings · Men's</div></div><div class="ci-rm">✕</div></div>
             <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(this,-1)">−</div><input class="ci-qval" type="number" value="12" min="1" oninput="onCartQtyInput(this)" onblur="onCartQtyBlur(this)"><div class="ci-qbtn" onclick="changeCartQty(this,1)">+</div></div><div class="ci-price">$5,604</div></div>
           </div>
-          <div class="cart-item">
+          <div class="cart-item" data-unit-price="445">
             <div class="ci-hdr"><div class="ci-ico" style="background:linear-gradient(145deg,#6B1010,#3D0A0A)">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Race</div><div class="ci-spec">184cm · Flat (No Bindings)</div></div><div class="ci-rm">✕</div></div>
             <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(this,-1)">−</div><input class="ci-qval" type="number" value="6" min="1" oninput="onCartQtyInput(this)" onblur="onCartQtyBlur(this)"><div class="ci-qbtn" onclick="changeCartQty(this,1)">+</div></div><div class="ci-price">$2,670</div></div>
           </div>
-          <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
+          <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt" id="discHintTxt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
           <div class="cart-totals">
-            <div class="tot-row"><div class="tot-lbl">Subtotal (18 pairs)</div><div class="tot-val">$8,274</div></div>
-            <div class="tot-row tot-disc"><div class="tot-lbl">Bulk Discount</div><div class="tot-val">— Not yet eligible</div></div>
+            <div class="tot-row"><div class="tot-lbl" id="cartSubtotalLbl">Subtotal (18 pairs)</div><div class="tot-val" id="cartSubtotalVal">$8,274</div></div>
+            <div class="tot-row tot-disc"><div class="tot-lbl">Bulk Discount</div><div class="tot-val" id="cartDiscVal">— Not yet eligible</div></div>
             <div class="tot-row"><div class="tot-lbl">Shipping</div><div class="tot-val">Calculated at checkout</div></div>
             <div class="div"></div>
-            <div class="tot-row tot-grand"><div class="tot-lbl">Est. Total</div><div class="tot-val">$8,274</div></div>
+            <div class="tot-row tot-grand"><div class="tot-lbl">Est. Total</div><div class="tot-val" id="cartTotalVal">$8,274</div></div>
           </div>
           <button class="btn btn-primary" onclick="goTo(5)">Proceed to Checkout &nbsp;→</button>
           <div style="height:8px"></div>
@@ -919,19 +919,70 @@ function onQtyBlur(input) {
   updateSummary();
 }
 
+function updateCartTotals() {
+  const items = document.querySelectorAll('#s5 .cart-item');
+  let subtotal = 0;
+  let totalPairs = 0;
+  items.forEach(item => {
+    const unitPrice = parseInt(item.dataset.unitPrice) || 0;
+    const input = item.querySelector('.ci-qval');
+    const q = Math.max(1, parseInt(input.value) || 1);
+    const lineTotal = unitPrice * q;
+    item.querySelector('.ci-price').textContent = '$' + lineTotal.toLocaleString();
+    subtotal += lineTotal;
+    totalPairs += q;
+  });
+
+  // Discount tiers: 1.5% at $20K, 2.5% at $40K
+  let discountRate = 0;
+  let discountLabel = '— Not yet eligible';
+  if (subtotal >= 40000) {
+    discountRate = 0.025;
+    discountLabel = '−2.5% ($' + Math.round(subtotal * discountRate).toLocaleString() + ')';
+  } else if (subtotal >= 20000) {
+    discountRate = 0.015;
+    discountLabel = '−1.5% ($' + Math.round(subtotal * discountRate).toLocaleString() + ')';
+  }
+  const discountAmt = Math.round(subtotal * discountRate);
+  const total = subtotal - discountAmt;
+
+  // Disc hint
+  const hintEl = document.getElementById('discHintTxt');
+  const hintWrap = hintEl.parentElement;
+  if (subtotal >= 40000) {
+    hintWrap.style.display = 'none';
+  } else {
+    hintWrap.style.display = '';
+    const nextTier = subtotal >= 20000 ? 40000 : 20000;
+    const nextRate = subtotal >= 20000 ? '2.5%' : '1.5%';
+    const gap = nextTier - subtotal;
+    const potentialSavings = Math.round(nextTier * (subtotal >= 20000 ? 0.025 : 0.015));
+    hintEl.textContent = 'Add $' + gap.toLocaleString() + ' more to unlock ' + nextRate + ' bulk discount ($' + potentialSavings.toLocaleString() + ' savings)';
+  }
+
+  document.getElementById('cartSubtotalLbl').textContent = 'Subtotal (' + totalPairs + ' pairs)';
+  document.getElementById('cartSubtotalVal').textContent = '$' + subtotal.toLocaleString();
+  document.getElementById('cartDiscVal').textContent = discountLabel;
+  document.getElementById('cartTotalVal').textContent = '$' + total.toLocaleString();
+  document.getElementById('cartItemCount').textContent = items.length + ' item' + (items.length !== 1 ? 's' : '') + ' in cart';
+}
+
 function changeCartQty(btn, delta) {
   const input = btn.parentElement.querySelector('.ci-qval');
   const val = Math.max(1, (parseInt(input.value) || 1) + delta);
   input.value = val;
+  updateCartTotals();
 }
 
 function onCartQtyInput(input) {
-  // allow free typing; clamp on blur
+  const val = parseInt(input.value);
+  if (!isNaN(val) && val >= 1) updateCartTotals();
 }
 
 function onCartQtyBlur(input) {
   const val = parseInt(input.value);
   input.value = isNaN(val) || val < 1 ? 1 : val;
+  updateCartTotals();
 }
 
 // ── Shipping selection ──
