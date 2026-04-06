@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pack Ski – B2B Dealer Portal Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%; font-family: 'Inter', -apple-system, sans-serif;
+  background: #E4EAF4; color: #1A2740; overflow: hidden;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── LAYOUT ── */
+.app-container { display: grid; grid-template-columns: 260px 1fr 300px; grid-template-rows: 56px 1fr; height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar { grid-column: 1/-1; background: #0D1F33; display: flex; align-items: center; padding: 0 20px; gap: 14px; border-bottom: 2px solid #B22222; }
+.topbar-logo { display: flex; align-items: center; gap: 10px; }
+.topbar-icon { width: 32px; height: 32px; border-radius: 7px; background: #B22222; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.topbar-brand-name { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+.topbar-brand-sub { font-size: 9px; font-weight: 500; color: #607A94; text-transform: uppercase; letter-spacing: 0.06em; }
+.topbar-sep { width: 1px; height: 26px; background: #1E3550; margin: 0 4px; }
+.topbar-title { color: #90A8BC; font-size: 12px; font-weight: 400; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.topbar-badge { background: #1A3050; border: 1px solid #2A4A6A; color: #6A8AA4; font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 100px; }
+.topbar-screen-count { color: #506878; font-size: 11px; font-weight: 500; }
+
+/* ── SIDEBAR ── */
+.sidebar { background: #111E2F; border-right: 1px solid #1A2E48; overflow-y: auto; padding: 10px 0; }
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: #243650; border-radius: 100px; }
+.sidebar-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #405868; padding: 8px 18px 5px; }
+.screen-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 18px; background: none; border: none; border-left: 3px solid transparent; cursor: pointer; text-align: left; transition: all 0.12s; }
+.screen-btn:hover { background: #192840; }
+.screen-btn.active { background: #192840; border-left-color: #B22222; }
+.sbn { width: 20px; height: 20px; border-radius: 50%; background: #1C3048; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: #506878; flex-shrink: 0; }
+.screen-btn.active .sbn { background: #B22222; color: #fff; }
+.sb-info { flex: 1; min-width: 0; }
+.sb-name { font-size: 12px; font-weight: 600; color: #98B8CC; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.screen-btn.active .sb-name { color: #fff; }
+.sb-desc { font-size: 10px; font-weight: 400; color: #405868; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── MAIN AREA ── */
+.main-area { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 16px 20px; overflow-y: auto; background: #D8E2EE; gap: 12px; }
+
+/* Phone nav strip */
+.phone-nav { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 100px; padding: 5px 14px; border: 1px solid #C0CEDC; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.nav-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #C0CEDC; background: #F4F7FA; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #4A6580; transition: all 0.12s; }
+.nav-btn:hover { border-color: #B22222; color: #B22222; background: #FFF5F5; }
+.nav-label { font-size: 11px; font-weight: 600; color: #2A4060; min-width: 130px; text-align: center; letter-spacing: -0.01em; }
+.nav-dots { display: flex; gap: 5px; align-items: center; }
+.nav-dot { width: 5px; height: 5px; border-radius: 50%; background: #C0CEDC; transition: background 0.12s; cursor: pointer; }
+.nav-dot.active { background: #B22222; }
+
+/* Phone frame */
+.phone-frame { width: 375px; background: #06080E; border-radius: 48px; padding: 11px; box-shadow: 0 0 0 1px #161E2A, 0 40px 80px rgba(0,0,0,0.4), inset 0 0 0 1px #0E1520; position: relative; flex-shrink: 0; }
+.phone-notch { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 110px; height: 28px; background: #06080E; border-radius: 0 0 18px 18px; z-index: 20; }
+.phone-screen { width: 100%; height: 752px; background: #F0F4FA; border-radius: 38px; overflow: hidden; position: relative; }
+
+/* ── SCREENS ── */
+.screen { position: absolute; inset: 0; display: none; flex-direction: column; overflow: hidden; background: #F0F4FA; }
+.screen.active { display: flex; }
+
+/* Status bar */
+.sb { height: 44px; display: flex; align-items: center; padding: 10px 20px 0; justify-content: space-between; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.sb-icons { display: flex; gap: 4px; align-items: center; }
+
+/* App header */
+.app-hdr { display: flex; align-items: center; padding: 6px 16px 10px; gap: 10px; flex-shrink: 0; }
+.hdr-title { font-size: 17px; font-weight: 700; flex: 1; color: #1A2740; letter-spacing: -0.02em; }
+.hdr-back { color: #B22222; font-size: 13px; font-weight: 600; cursor: pointer; }
+.hdr-ico { width: 30px; height: 30px; border-radius: 8px; background: #E8EEF6; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+
+/* Scrollable body */
+.scr-body { flex: 1; overflow-y: auto; padding: 0 15px 16px; }
+.scr-body::-webkit-scrollbar { display: none; }
+
+/* Bottom nav */
+.bnav { display: flex; border-top: 1px solid #E0E8F0; background: #fff; padding: 8px 0 20px; flex-shrink: 0; }
+.bni { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 3px 0; transition: opacity 0.1s; }
+.bni:hover { opacity: 0.75; }
+.bni-ico { font-size: 19px; color: #A0B4C4; }
+.bni-ico.on { color: #B22222; }
+.bni-lbl { font-size: 9px; font-weight: 600; color: #A0B4C4; letter-spacing: 0.01em; }
+.bni-lbl.on { color: #B22222; }
+
+/* Cards */
+.card { background: #fff; border-radius: 14px; border: 1px solid #E0E8F0; margin-bottom: 10px; overflow: hidden; }
+.card-hdr { padding: 12px 14px 6px; display: flex; align-items: center; justify-content: space-between; }
+.card-ttl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #8898A8; }
+.card-lnk { font-size: 11px; font-weight: 600; color: #B22222; cursor: pointer; }
+.card-body { padding: 0 14px 14px; }
+
+/* Buttons */
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 18px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; width: 100%; letter-spacing: -0.01em; font-family: 'Inter', sans-serif; transition: opacity 0.12s; }
+.btn:hover { opacity: 0.88; }
+.btn-primary { background: #B22222; color: #fff; }
+.btn-navy { background: #1B3A5C; color: #fff; }
+.btn-ghost { background: #EEF2F8; color: #2A4060; border: 1px solid #D8E2EE; }
+.btn-outline { background: transparent; color: #B22222; border: 1.5px solid #B22222; }
+
+/* Tags */
+.tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 100px; font-size: 9px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
+.tag-navy { background: #E6EEF8; color: #1B4070; }
+.tag-red { background: #FCEAEA; color: #C02020; }
+.tag-green { background: #E6F6EC; color: #1A7840; }
+.tag-gold { background: #FFF4DC; color: #8A6808; }
+.tag-gray { background: #EDF1F8; color: #506080; }
+
+.div { height: 1px; background: #EEF2F8; margin: 8px 0; }
+.sec-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #8898A8; margin-bottom: 8px; }
+
+/* ═══════════════════════════════
+   SCREEN 1 — LOGIN
+═══════════════════════════════ */
+#s1 { background: linear-gradient(158deg, #0C1C2E 0%, #1B3A5C 55%, #0A1828 100%); }
+.login-hero { padding: 54px 28px 22px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.login-logo-ring { width: 72px; height: 72px; border-radius: 20px; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; font-size: 34px; }
+.login-brand { color: #fff; font-size: 24px; font-weight: 700; letter-spacing: -0.03em; }
+.login-sub { color: rgba(255,255,255,0.42); font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; }
+.login-tagline { color: rgba(255,255,255,0.28); font-size: 11px; font-weight: 400; margin-top: 2px; }
+.login-form { padding: 0 24px; display: flex; flex-direction: column; gap: 11px; }
+.lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.42); margin-bottom: 5px; }
+.linput { width: 100%; padding: 12px 15px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 11px; font-size: 13px; color: rgba(255,255,255,0.35); font-family: 'Inter', sans-serif; }
+.forgot { text-align: right; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.35); margin-top: -5px; }
+.acct-type-row { display: flex; gap: 9px; }
+.acct-type-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.45); font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.12s; font-family: 'Inter', sans-serif; }
+.acct-type-btn.sel { border-color: #B22222; background: rgba(178,34,34,0.15); color: #FF9090; }
+.acct-type-btn .acct-radio { font-size: 9px; margin-bottom: 2px; font-weight: 500; }
+.login-cta { margin: 14px 24px 0; padding: 14px; border-radius: 12px; background: #B22222; border: none; color: #fff; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.12s; }
+.login-cta:hover { opacity: 0.88; }
+.login-footer { margin-top: auto; padding: 18px 24px; text-align: center; font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.18); line-height: 1.6; }
+
+/* ═══════════════════════════════
+   SCREEN 2 — HOME DASHBOARD
+═══════════════════════════════ */
+#s2 { background: #EEF3F9; }
+.home-hero { background: linear-gradient(135deg, #0C1C2E 0%, #1B3A5C 100%); padding: 44px 16px 44px; flex-shrink: 0; }
+.home-hero-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.home-greet { color: rgba(255,255,255,0.55); font-size: 11px; font-weight: 400; margin-bottom: 3px; }
+.home-company { color: #fff; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+.home-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; }
+.stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: -34px; }
+.stat-crd { background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.stat-ico { font-size: 16px; margin-bottom: 5px; }
+.stat-lbl { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #8898A8; margin-bottom: 3px; }
+.stat-val { font-size: 19px; font-weight: 700; color: #1A2740; letter-spacing: -0.03em; }
+.stat-sub { font-size: 9px; font-weight: 400; color: #A0B4C4; margin-top: 2px; }
+.home-body { padding: 44px 15px 0; }
+.qa-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+.qa { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 13px 6px; background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; cursor: pointer; transition: all 0.12s; }
+.qa:hover { border-color: #B22222; background: #FFF8F8; }
+.qa-ico-wrap { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 19px; }
+.qa-ico-wrap.r { background: #FCEAEA; }
+.qa-ico-wrap.b { background: #E6EEF8; }
+.qa-ico-wrap.g { background: #E6F6EC; }
+.qa-lbl { font-size: 10px; font-weight: 600; color: #3A5070; text-align: center; }
+.ord-row { display: flex; align-items: center; gap: 11px; padding: 10px 0; cursor: pointer; }
+.ord-row:hover .ord-id { color: #B22222; }
+.ord-row + .ord-row { border-top: 1px solid #EEF2F8; }
+.ord-ico { width: 34px; height: 34px; border-radius: 9px; background: #E6EEF8; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.ord-inf { flex: 1; min-width: 0; }
+.ord-id { font-size: 12px; font-weight: 600; color: #1A2740; transition: color 0.12s; }
+.ord-desc { font-size: 10px; font-weight: 400; color: #7A8EA8; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ord-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.badge { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 100px; }
+.bdg-ship { background: #E6F6EC; color: #1A7840; }
+.bdg-proc { background: #FFF4DC; color: #8A6808; }
+.bdg-pend { background: #EDF1F8; color: #506080; }
+.ord-date { font-size: 9px; font-weight: 400; color: #A8B8C8; }
+.promo-banner { background: linear-gradient(130deg, #B22222 0%, #8A1A1A 100%); border-radius: 13px; padding: 13px 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: pointer; transition: opacity 0.12s; }
+.promo-banner:hover { opacity: 0.9; }
+.pb-ico { font-size: 26px; flex-shrink: 0; }
+.pb-ttl { color: #fff; font-size: 13px; font-weight: 600; margin-bottom: 2px; letter-spacing: -0.01em; }
+.pb-sub { color: rgba(255,255,255,0.72); font-size: 11px; font-weight: 400; }
+.pb-arr { color: rgba(255,255,255,0.55); font-size: 16px; margin-left: auto; }
+
+/* ═══════════════════════════════
+   SCREEN 3 — PRODUCT CATALOG
+═══════════════════════════════ */
+.search-bar { display: flex; align-items: center; gap: 9px; background: #fff; border: 1.5px solid #DAE2EE; border-radius: 11px; padding: 9px 13px; margin-bottom: 10px; }
+.search-ico { font-size: 14px; color: #8898A8; }
+.search-ph { font-size: 13px; font-weight: 400; color: #A8B8C8; flex: 1; }
+.fchips { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 11px; padding-bottom: 2px; }
+.fchips::-webkit-scrollbar { display: none; }
+.fc { flex-shrink: 0; padding: 5px 13px; border-radius: 100px; font-size: 10px; font-weight: 600; border: 1.5px solid #D0DAE8; background: #fff; color: #506080; white-space: nowrap; cursor: pointer; transition: all 0.12s; }
+.fc.on { background: #1B3A5C; border-color: #1B3A5C; color: #fff; }
+.fc:hover:not(.on) { border-color: #B22222; color: #B22222; }
+.sort-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.sort-cnt { font-size: 11px; font-weight: 400; color: #8898A8; }
+.sort-sel { font-size: 11px; font-weight: 600; color: #B22222; cursor: pointer; }
+.prod-card { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; margin-bottom: 9px; display: flex; overflow: hidden; cursor: pointer; transition: all 0.14s; }
+.prod-card:hover { border-color: #B22222; box-shadow: 0 4px 16px rgba(178,34,34,0.1); transform: translateY(-1px); }
+.prod-img { width: 80px; flex-shrink: 0; background: linear-gradient(155deg, #1B3A5C, #0C1C2E); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+.prod-inf { flex: 1; padding: 12px 13px; }
+.prod-name { font-size: 14px; font-weight: 600; color: #1A2740; margin-bottom: 5px; letter-spacing: -0.01em; }
+.prod-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+.prod-sizes { font-size: 10px; font-weight: 400; color: #8898A8; margin-bottom: 6px; }
+.prod-pf { display: flex; align-items: center; justify-content: space-between; }
+.prod-price { font-size: 14px; font-weight: 700; color: #1B3A5C; letter-spacing: -0.02em; }
+.prod-arr { font-size: 16px; color: #C0CCD8; }
+
+/* ═══════════════════════════════
+   SCREEN 4 — ORDER CUSTOMIZATION
+═══════════════════════════════ */
+.prod-hero { background: linear-gradient(135deg, #0C1C2E 0%, #1B3A5C 100%); padding: 14px; display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.ph-img { width: 66px; height: 66px; border-radius: 13px; background: rgba(255,255,255,0.09); border: 1.5px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.ph-name { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.02em; }
+.ph-sub { color: rgba(255,255,255,0.55); font-size: 11px; font-weight: 400; }
+.ph-tags { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+.ph-tag { font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 100px; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.size-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 14px; }
+.sz-btn { padding: 10px 4px; border-radius: 10px; border: 1.5px solid #D0DAE8; background: #fff; text-align: center; cursor: pointer; transition: all 0.12s; }
+.sz-btn:hover:not(.sel) { border-color: #8898A8; }
+.sz-btn.sel { border-color: #1B3A5C; background: #1B3A5C; }
+.sz-v { font-size: 13px; font-weight: 700; color: #1A2740; letter-spacing: -0.02em; }
+.sz-btn.sel .sz-v { color: #fff; }
+.sz-u { font-size: 9px; font-weight: 400; color: #8898A8; margin-top: 1px; }
+.sz-btn.sel .sz-u { color: rgba(255,255,255,0.5); }
+
+.bind-opts { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+.bind-opt { display: flex; align-items: center; padding: 11px 13px; background: #fff; border-radius: 11px; border: 1.5px solid #D0DAE8; gap: 11px; cursor: pointer; transition: all 0.12s; }
+.bind-opt.sel { border-color: #B22222; background: #FFF5F5; }
+.radio { width: 17px; height: 17px; border-radius: 50%; border: 2px solid #B8C8D8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.12s; }
+.radio.sel { border-color: #B22222; }
+.radio-dot { width: 7px; height: 7px; border-radius: 50%; background: #B22222; }
+.bind-inf { flex: 1; }
+.bind-name { font-size: 13px; font-weight: 600; color: #1A2740; }
+.bind-sub { font-size: 10px; font-weight: 400; color: #8898A8; margin-top: 1px; }
+.bind-price { font-size: 14px; font-weight: 700; color: #1B3A5C; letter-spacing: -0.02em; }
+
+.qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.qty-btn { width: 34px; height: 34px; border-radius: 9px; border: 1.5px solid #D0DAE8; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #1A2740; cursor: pointer; transition: all 0.12s; user-select: none; }
+.qty-btn:hover { border-color: #1B3A5C; color: #1B3A5C; }
+.qty-val { font-size: 20px; font-weight: 700; color: #1A2740; min-width: 36px; text-align: center; letter-spacing: -0.03em; }
+.qty-hint { font-size: 10px; font-weight: 400; color: #A8B8C8; }
+
+.sum-mini { background: #fff; border-radius: 12px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 13px; }
+.sum-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+.sum-lbl { font-size: 11px; font-weight: 400; color: #7A8EA8; }
+.sum-val { font-size: 11px; font-weight: 600; color: #1A2740; }
+.sum-total .sum-lbl { font-size: 13px; font-weight: 600; color: #1A2740; }
+.sum-total .sum-val { font-size: 16px; font-weight: 700; color: #B22222; letter-spacing: -0.02em; }
+
+/* ═══════════════════════════════
+   SCREEN 5 — CART
+═══════════════════════════════ */
+.cart-item { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 9px; }
+.ci-hdr { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 10px; }
+.ci-ico { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(145deg, #1B3A5C, #0C1C2E); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+.ci-det { flex: 1; }
+.ci-name { font-size: 13px; font-weight: 600; color: #1A2740; letter-spacing: -0.01em; }
+.ci-spec { font-size: 10px; font-weight: 400; color: #8898A8; margin-top: 2px; }
+.ci-rm { font-size: 17px; color: #C0CCD8; cursor: pointer; transition: color 0.12s; }
+.ci-rm:hover { color: #B22222; }
+.ci-qp { display: flex; align-items: center; justify-content: space-between; }
+.ci-qctrl { display: flex; align-items: center; gap: 10px; background: #EEF2F8; border-radius: 9px; padding: 5px 10px; }
+.ci-qbtn { font-size: 16px; font-weight: 700; color: #3A5070; cursor: pointer; user-select: none; transition: color 0.12s; }
+.ci-qbtn:hover { color: #B22222; }
+.ci-qval { font-size: 14px; font-weight: 700; color: #1A2740; min-width: 22px; text-align: center; letter-spacing: -0.02em; }
+.ci-price { font-size: 15px; font-weight: 700; color: #1A2740; letter-spacing: -0.02em; }
+
+.cart-totals { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 10px; }
+.tot-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+.tot-lbl { font-size: 12px; font-weight: 400; color: #7A8EA8; }
+.tot-val { font-size: 12px; font-weight: 600; color: #1A2740; }
+.tot-disc .tot-val { color: #1A7840; }
+.tot-grand .tot-lbl { font-size: 15px; font-weight: 600; color: #1A2740; }
+.tot-grand .tot-val { font-size: 18px; font-weight: 700; color: #1A2740; letter-spacing: -0.03em; }
+
+.disc-hint { background: #E6F6EC; border-radius: 10px; padding: 9px 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.dh-ico { font-size: 14px; }
+.dh-txt { font-size: 11px; font-weight: 600; color: #1A7840; flex: 1; }
+
+/* ═══════════════════════════════
+   SCREEN 6 — CHECKOUT
+═══════════════════════════════ */
+.co-summary { background: #1B3A5C; border-radius: 13px; padding: 13px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+.cos-ico { font-size: 22px; }
+.cos-inf { flex: 1; }
+.cos-ttl { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+.cos-sub { color: rgba(255,255,255,0.55); font-size: 10px; font-weight: 400; }
+.cos-tot { color: #fff; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+
+.ship-opt { display: flex; align-items: center; padding: 11px 13px; background: #fff; border-radius: 11px; border: 1.5px solid #D0DAE8; gap: 11px; margin-bottom: 7px; cursor: pointer; transition: all 0.12s; }
+.ship-opt.sel { border-color: #1B3A5C; background: #E6EEF8; }
+.ship-opt.disabled { opacity: 0.45; cursor: not-allowed; }
+.ship-ico { font-size: 17px; flex-shrink: 0; }
+.ship-inf { flex: 1; }
+.ship-name { font-size: 13px; font-weight: 600; color: #1A2740; }
+.ship-eta { font-size: 10px; font-weight: 400; color: #8898A8; margin-top: 1px; }
+.ship-cost { font-size: 12px; font-weight: 600; color: #1B3A5C; }
+.ship-cost.na { color: #A8B8C8; font-size: 10px; font-weight: 400; font-style: italic; }
+
+.date-pick { background: #fff; border-radius: 11px; border: 1.5px solid #D0DAE8; padding: 11px 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer; }
+.dp-ico { font-size: 17px; color: #1B3A5C; }
+.dp-val { flex: 1; font-size: 13px; font-weight: 600; color: #1A2740; }
+.dp-arr { font-size: 12px; color: #A8B8C8; }
+
+.addr-card { background: #fff; border-radius: 11px; border: 1.5px solid #D0DAE8; padding: 11px 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.addr-ico { font-size: 17px; color: #B22222; }
+.addr-inf { flex: 1; }
+.addr-name { font-size: 13px; font-weight: 600; color: #1A2740; }
+.addr-line { font-size: 10px; font-weight: 400; color: #8898A8; margin-top: 2px; }
+.addr-chg { font-size: 11px; font-weight: 600; color: #B22222; cursor: pointer; }
+
+.pay-card { background: #FFF8E4; border-radius: 11px; border: 1px solid #EED880; padding: 11px 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.pay-ico { font-size: 17px; }
+.pay-inf { flex: 1; }
+.pay-lbl { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #907810; margin-bottom: 2px; }
+.pay-val { font-size: 13px; font-weight: 600; color: #1A2740; }
+.pay-lnk { font-size: 10px; font-weight: 500; color: #907810; text-decoration: underline; cursor: pointer; }
+
+/* ═══════════════════════════════
+   SCREEN 7 — PROFILE
+═══════════════════════════════ */
+.prof-hero { background: linear-gradient(135deg, #0C1C2E, #1B3A5C); padding: 14px; display: flex; align-items: center; gap: 13px; flex-shrink: 0; }
+.prof-av { width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.prof-name { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.02em; }
+.prof-type { display: inline-flex; padding: 2px 8px; border-radius: 100px; background: rgba(178,34,34,0.38); color: #FFA0A0; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+.prof-loc { color: rgba(255,255,255,0.48); font-size: 11px; font-weight: 400; }
+
+.inf-row { display: flex; align-items: center; padding: 10px 0; gap: 11px; }
+.inf-row + .inf-row { border-top: 1px solid #EEF2F8; }
+.ir-ico { font-size: 14px; width: 22px; text-align: center; color: #7A8EA8; flex-shrink: 0; }
+.ir-inf { flex: 1; }
+.ir-lbl { font-size: 9px; font-weight: 600; color: #A0B4C4; text-transform: uppercase; letter-spacing: 0.04em; }
+.ir-val { font-size: 12px; font-weight: 600; color: #1A2740; margin-top: 1px; }
+.ir-arr { font-size: 12px; color: #C0CCD8; }
+
+.cr-bar-wrap { margin: 6px 0 2px; }
+.cr-bar-track { height: 5px; background: #EEF2F8; border-radius: 100px; overflow: hidden; }
+.cr-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #1A7840, #2ECC71); width: 60%; }
+.cr-bar-lbls { display: flex; justify-content: space-between; font-size: 9px; font-weight: 400; color: #A0B4C4; margin-top: 3px; }
+
+.pay-pref-row { display: flex; gap: 7px; margin-bottom: 12px; }
+.pref-btn { flex: 1; padding: 9px; border-radius: 10px; border: 1.5px solid #D0DAE8; background: #EEF2F8; color: #8898A8; font-size: 11px; font-weight: 600; text-align: center; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.12s; }
+.pref-btn.sel { border-color: #1B3A5C; background: #E6EEF8; color: #1B3A5C; }
+
+.menu-item { display: flex; align-items: center; padding: 11px 13px; gap: 11px; border-radius: 11px; cursor: pointer; margin-bottom: 3px; transition: background 0.12s; }
+.menu-item:hover { background: #EEF2F8; }
+.mi-ico { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.mi-ico.b { background: #E6EEF8; }
+.mi-ico.g { background: #E6F6EC; }
+.mi-ico.r { background: #FCEAEA; }
+.mi-lbl { flex: 1; font-size: 13px; font-weight: 500; color: #1A2740; }
+.mi-arr { font-size: 12px; color: #C0CCD8; }
+
+/* ═══════════════════════════════
+   SCREEN 8 — NOTIFICATIONS
+═══════════════════════════════ */
+.notif-promo { background: linear-gradient(130deg, #B22222, #8A0000); border-radius: 13px; padding: 14px 15px; margin-bottom: 12px; }
+.np-tag { display: inline-block; background: rgba(255,255,255,0.16); color: #fff; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 100px; margin-bottom: 7px; }
+.np-ttl { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+.np-sub { color: rgba(255,255,255,0.75); font-size: 11px; font-weight: 400; line-height: 1.55; }
+.np-cta { margin-top: 11px; display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #B22222; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 100px; cursor: pointer; transition: opacity 0.12s; }
+.np-cta:hover { opacity: 0.88; }
+
+.ntabs { display: flex; background: #E0E8F0; border-radius: 10px; padding: 3px; margin-bottom: 12px; }
+.ntab { flex: 1; padding: 6px 4px; text-align: center; font-size: 10px; font-weight: 600; color: #7A8EA8; border-radius: 8px; cursor: pointer; transition: all 0.12s; font-family: 'Inter', sans-serif; }
+.ntab.on { background: #fff; color: #1A2740; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+.n-date { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #A0B4C4; margin: 7px 0 5px; }
+.notif-item { display: flex; gap: 10px; padding: 10px 0; align-items: flex-start; }
+.notif-item + .notif-item { border-top: 1px solid #EEF2F8; }
+.ni-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.ni-ico.ord { background: #E6EEF8; }
+.ni-ico.prm { background: #FCEAEA; }
+.ni-ico.alr { background: #FFF4DC; }
+.ni-ico.ok { background: #E6F6EC; }
+.ni-inf { flex: 1; }
+.ni-ttl { font-size: 12px; font-weight: 600; color: #1A2740; margin-bottom: 2px; }
+.ni-sub { font-size: 11px; font-weight: 400; color: #7A8EA8; line-height: 1.45; }
+.ni-time { font-size: 10px; font-weight: 400; color: #A8B8C8; flex-shrink: 0; margin-top: 2px; }
+.ni-dot { width: 6px; height: 6px; border-radius: 50%; background: #B22222; margin-top: 6px; flex-shrink: 0; }
+
+/* ═══════════════════════════════
+   SCREEN 9 — CUSTOMER SUPPORT
+═══════════════════════════════ */
+.rep-card { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 12px; }
+.rep-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.rep-av { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #1B3A5C, #2A5580); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.rep-name { font-size: 14px; font-weight: 700; color: #1A2740; letter-spacing: -0.01em; }
+.rep-title { font-size: 11px; font-weight: 400; color: #8898A8; margin-top: 1px; }
+.rep-status { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+.rep-dot { width: 6px; height: 6px; border-radius: 50%; background: #1A7840; }
+.rep-stxt { font-size: 10px; font-weight: 500; color: #1A7840; }
+.rep-btns { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+.rep-btn { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 7px; border-radius: 11px; border: 1.5px solid #DAE2EE; cursor: pointer; transition: all 0.12s; }
+.rep-btn:hover { border-color: #B22222; background: #FFF8F8; }
+.rep-btn-ico { font-size: 19px; }
+.rep-btn-lbl { font-size: 10px; font-weight: 600; color: #3A5070; text-align: center; }
+
+.qh-item { display: flex; align-items: center; padding: 11px 13px; background: #fff; border-radius: 11px; border: 1px solid #E0E8F0; margin-bottom: 7px; gap: 10px; cursor: pointer; transition: all 0.12s; }
+.qh-item:hover { border-color: #1B3A5C; background: #F0F4FA; }
+.qh-ico { font-size: 16px; color: #1B3A5C; flex-shrink: 0; }
+.qh-lbl { flex: 1; font-size: 13px; font-weight: 500; color: #1A2740; }
+.qh-arr { font-size: 12px; color: #C0CCD8; }
+
+.chat-box { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; overflow: hidden; margin-bottom: 12px; }
+.chat-hdr { background: #1B3A5C; padding: 10px 14px; display: flex; align-items: center; gap: 8px; }
+.chat-hdr-dot { width: 7px; height: 7px; border-radius: 50%; background: #2ECC71; }
+.chat-hdr-lbl { color: #fff; font-size: 12px; font-weight: 600; }
+.chat-msgs { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.chat-bub { max-width: 82%; padding: 9px 12px; border-radius: 12px; font-size: 11px; font-weight: 400; line-height: 1.55; }
+.bub-in { background: #EEF2F8; color: #1A2740; align-self: flex-start; border-bottom-left-radius: 4px; }
+.bub-out { background: #1B3A5C; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-sender { font-size: 9px; font-weight: 500; color: #8898A8; margin-bottom: 3px; }
+.chat-sender.out { text-align: right; color: rgba(255,255,255,0.45); }
+.chat-input-bar { display: flex; align-items: center; gap: 9px; padding: 9px 13px; border-top: 1px solid #EEF2F8; }
+.chat-inp { flex: 1; background: #EEF2F8; border-radius: 20px; padding: 8px 13px; font-size: 12px; font-weight: 400; color: #A0B4C4; font-family: 'Inter', sans-serif; }
+.chat-send { width: 30px; height: 30px; border-radius: 50%; background: #B22222; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #fff; cursor: pointer; }
+
+/* ═══════════════════════════════
+   SUCCESS OVERLAY
+═══════════════════════════════ */
+.success-overlay {
+  position: absolute; inset: 0; background: #F0F4FA;
+  z-index: 200; display: none; flex-direction: column;
+  align-items: center; justify-content: center; padding: 30px; text-align: center;
+}
+.success-overlay.visible { display: flex; }
+.success-ring { width: 76px; height: 76px; border-radius: 50%; background: #1A7840; display: flex; align-items: center; justify-content: center; font-size: 36px; color: #fff; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(26,120,64,0.3); }
+.success-title { font-size: 22px; font-weight: 700; color: #1A2740; margin-bottom: 5px; letter-spacing: -0.03em; }
+.success-order { font-size: 13px; font-weight: 600; color: #B22222; margin-bottom: 12px; }
+.success-sub { font-size: 12px; font-weight: 400; color: #6A8090; line-height: 1.65; margin-bottom: 28px; }
+.success-eta { font-size: 11px; font-weight: 600; color: #1A7840; background: #E6F6EC; padding: 8px 16px; border-radius: 100px; margin-bottom: 24px; }
+
+/* ═══════════════════════════════
+   ANNOTATIONS PANEL
+═══════════════════════════════ */
+.anno-panel { background: #fff; border-left: 1px solid #D0DAE8; overflow-y: auto; padding: 20px; }
+.anno-panel::-webkit-scrollbar { width: 4px; }
+.anno-panel::-webkit-scrollbar-thumb { background: #D0DAE8; border-radius: 100px; }
+.anno-screen-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #B22222; margin-bottom: 4px; }
+.anno-screen-name { font-size: 19px; font-weight: 700; color: #1A2740; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.02em; }
+.anno-desc { font-size: 12px; font-weight: 400; color: #4A6070; line-height: 1.7; margin-bottom: 16px; }
+.anno-section { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #8898A8; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #EEF2F8; }
+.anno-feat { display: flex; gap: 9px; margin-bottom: 8px; align-items: flex-start; }
+.anno-dot { width: 5px; height: 5px; border-radius: 50%; background: #B22222; margin-top: 6px; flex-shrink: 0; }
+.anno-feat-txt { font-size: 12px; font-weight: 400; color: #4A6070; line-height: 1.55; }
+.anno-note { background: #FFF8E4; border: 1px solid #EED880; border-radius: 9px; padding: 10px 12px; margin-top: 14px; }
+.anno-note-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #907810; margin-bottom: 4px; }
+.anno-note-txt { font-size: 11px; font-weight: 400; color: #706010; line-height: 1.55; }
+.anno-divider { height: 1px; background: #EEF2F8; margin: 14px 0; }
+</style>
+</head>
+<body>
+<div class="app-container">
+
+<!-- ── TOPBAR ── -->
+<header class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-icon">⛷</div>
+    <div>
+      <div class="topbar-brand-name">Pack Ski</div>
+      <div class="topbar-brand-sub">Packwood Ski Company</div>
+    </div>
+  </div>
+  <div class="topbar-sep"></div>
+  <span class="topbar-title">B2B Dealer Portal — Mobile App Mockup</span>
+  <div class="topbar-right">
+    <span class="topbar-screen-count" id="screenCount">Screen 1 of 9</span>
+    <span class="topbar-badge">v1.0 Concept</span>
+  </div>
+</header>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-label">App Screens</div>
+  <button class="screen-btn active" onclick="goTo(0)"><div class="sbn">1</div><div class="sb-info"><div class="sb-name">Login</div><div class="sb-desc">Dealer authentication</div></div></button>
+  <button class="screen-btn" onclick="goTo(1)"><div class="sbn">2</div><div class="sb-info"><div class="sb-name">Home Dashboard</div><div class="sb-desc">Account overview</div></div></button>
+  <button class="screen-btn" onclick="goTo(2)"><div class="sbn">3</div><div class="sb-info"><div class="sb-name">Product Catalog</div><div class="sb-desc">Browse ski models</div></div></button>
+  <button class="screen-btn" onclick="goTo(3)"><div class="sbn">4</div><div class="sb-info"><div class="sb-name">Order Customization</div><div class="sb-desc">Configure &amp; price items</div></div></button>
+  <button class="screen-btn" onclick="goTo(4)"><div class="sbn">5</div><div class="sb-info"><div class="sb-name">Cart</div><div class="sb-desc">Review &amp; bulk discounts</div></div></button>
+  <button class="screen-btn" onclick="goTo(5)"><div class="sbn">6</div><div class="sb-info"><div class="sb-name">Checkout &amp; Scheduling</div><div class="sb-desc">Shipping &amp; delivery</div></div></button>
+  <button class="screen-btn" onclick="goTo(6)"><div class="sbn">7</div><div class="sb-info"><div class="sb-name">User Profile</div><div class="sb-desc">Account &amp; preferences</div></div></button>
+  <button class="screen-btn" onclick="goTo(7)"><div class="sbn">8</div><div class="sb-info"><div class="sb-name">Notifications</div><div class="sb-desc">Alerts &amp; promotions</div></div></button>
+  <button class="screen-btn" onclick="goTo(8)"><div class="sbn">9</div><div class="sb-info"><div class="sb-name">Customer Support</div><div class="sb-desc">Rep contact &amp; chat</div></div></button>
+</aside>
+
+<!-- ── MAIN PHONE AREA ── -->
+<main class="main-area">
+  <div class="phone-nav">
+    <button class="nav-btn" onclick="prev()">&#8592;</button>
+    <div class="nav-dots" id="navDots"></div>
+    <span class="nav-label" id="navLabel">01 / Login</span>
+    <button class="nav-btn" onclick="next()">&#8594;</button>
+  </div>
+
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+
+      <!-- SUCCESS OVERLAY (shared, shown over any screen) -->
+      <div class="success-overlay" id="successOverlay">
+        <div class="success-ring">✓</div>
+        <div class="success-title">Order Confirmed!</div>
+        <div class="success-order">#PSC-2025-094</div>
+        <div class="success-sub">Your order has been received and is being processed. You'll get a confirmation notification shortly.</div>
+        <div class="success-eta">Est. delivery: March 15, 2025</div>
+        <button class="btn btn-primary" style="width:200px" onclick="closeSuccess()">Back to Home</button>
+      </div>
+
+      <!-- ══ S1: LOGIN ══ -->
+      <div class="screen active" id="s1">
+        <div style="display:flex;flex-direction:column;height:100%">
+          <div class="login-hero">
+            <div class="login-logo-ring">⛷</div>
+            <div class="login-brand">Pack Ski</div>
+            <div class="login-sub">Dealer Portal</div>
+            <div class="login-tagline">Packwood Ski Company · Packwood, WA</div>
+          </div>
+          <div class="login-form">
+            <div>
+              <div class="lbl">Company Email</div>
+              <div class="linput">dealer@mountaingear.com</div>
+            </div>
+            <div>
+              <div class="lbl">Password</div>
+              <div class="linput">••••••••••••</div>
+            </div>
+            <div class="forgot">Forgot password?</div>
+            <div>
+              <div class="lbl">Account Type</div>
+              <div class="acct-type-row">
+                <div class="acct-type-btn sel" onclick="selectAcctType(this)"><div class="acct-radio">● Retailer</div><div style="font-size:9px;opacity:0.6;margin-top:2px">Specialty shop</div></div>
+                <div class="acct-type-btn" onclick="selectAcctType(this)"><div class="acct-radio">○ Wholesaler</div><div style="font-size:9px;opacity:0.6;margin-top:2px">Distributor</div></div>
+              </div>
+            </div>
+          </div>
+          <button class="login-cta" onclick="goTo(1)">Sign In &nbsp;→</button>
+          <div class="login-footer">Pack Ski B2B Portal v2.1 · © 2025 Packwood Ski Company<br>Authorized dealers only. Not for consumer use.</div>
+        </div>
+      </div>
+
+      <!-- ══ S2: HOME DASHBOARD ══ -->
+      <div class="screen" id="s2">
+        <div class="home-hero">
+          <div class="home-hero-row">
+            <div>
+              <div class="home-greet">Good morning,</div>
+              <div class="home-company">Mountain Gear Co. 🏔</div>
+            </div>
+            <div class="home-avatar" onclick="goTo(6)">🏬</div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-crd"><div class="stat-ico">💳</div><div class="stat-lbl">Credit Available</div><div class="stat-val">$45,200</div><div class="stat-sub">of $75,000 limit</div></div>
+            <div class="stat-crd"><div class="stat-ico">📦</div><div class="stat-lbl">Open Orders</div><div class="stat-val">3</div><div class="stat-sub">2 in transit</div></div>
+          </div>
+        </div>
+        <div class="scr-body home-body">
+          <div class="qa-grid">
+            <div class="qa" onclick="goTo(2)"><div class="qa-ico-wrap r">➕</div><div class="qa-lbl">New Order</div></div>
+            <div class="qa" onclick="goTo(4)"><div class="qa-ico-wrap b">📍</div><div class="qa-lbl">Track Orders</div></div>
+            <div class="qa" onclick="goTo(8)"><div class="qa-ico-wrap g">💬</div><div class="qa-lbl">Support</div></div>
+          </div>
+          <div class="card">
+            <div class="card-hdr"><div class="card-ttl">Recent Orders</div><div class="card-lnk" onclick="goTo(4)">View All</div></div>
+            <div class="card-body">
+              <div class="ord-row"><div class="ord-ico">📦</div><div class="ord-inf"><div class="ord-id">#PSC-2025-089</div><div class="ord-desc">Pack Ski Pro Series · 24 units</div></div><div class="ord-meta"><span class="badge bdg-ship">Shipped</span><span class="ord-date">Est. Mar 5</span></div></div>
+              <div class="ord-row"><div class="ord-ico">⚙️</div><div class="ord-inf"><div class="ord-id">#PSC-2025-086</div><div class="ord-desc">Pack Ski Race Series · 12 units</div></div><div class="ord-meta"><span class="badge bdg-proc">Processing</span><span class="ord-date">Mar 10</span></div></div>
+              <div class="ord-row"><div class="ord-ico">🕐</div><div class="ord-inf"><div class="ord-id">#PSC-2025-081</div><div class="ord-desc">Pack Ski Powder · 8 units</div></div><div class="ord-meta"><span class="badge bdg-pend">Pending</span><span class="ord-date">Mar 15</span></div></div>
+            </div>
+          </div>
+          <div class="promo-banner" onclick="goTo(2)">
+            <div class="pb-ico">🏔</div>
+            <div><div class="pb-ttl">Pre-Season Sale Active</div><div class="pb-sub">2.5% off orders over $40,000<br>Valid through March 31, 2025</div></div>
+            <div class="pb-arr">›</div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bni"><div class="bni-ico on">🏠</div><div class="bni-lbl on">Home</div></div>
+          <div class="bni" onclick="goTo(2)"><div class="bni-ico">📋</div><div class="bni-lbl">Catalog</div></div>
+          <div class="bni" onclick="goTo(4)"><div class="bni-ico">🛒</div><div class="bni-lbl">Orders</div></div>
+          <div class="bni" onclick="goTo(7)"><div class="bni-ico">🔔</div><div class="bni-lbl">Alerts</div></div>
+          <div class="bni" onclick="goTo(6)"><div class="bni-ico">👤</div><div class="bni-lbl">Profile</div></div>
+        </div>
+      </div>
+
+      <!-- ══ S3: PRODUCT CATALOG ══ -->
+      <div class="screen" id="s3">
+        <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="app-hdr"><div class="hdr-title">Catalog</div><div class="hdr-ico">⚙</div></div>
+        <div class="scr-body" style="padding-top:4px">
+          <div class="search-bar"><span class="search-ico">🔍</span><span class="search-ph">Search ski models…</span><span style="font-size:12px;font-weight:600;color:#B22222">Filter</span></div>
+          <div class="fchips" id="filterChips">
+            <div class="fc on" onclick="toggleFilter(this)">All Models</div>
+            <div class="fc" onclick="toggleFilter(this)">Men's</div>
+            <div class="fc" onclick="toggleFilter(this)">Women's</div>
+            <div class="fc" onclick="toggleFilter(this)">Powder</div>
+            <div class="fc" onclick="toggleFilter(this)">Racing</div>
+            <div class="fc" onclick="toggleFilter(this)">All-Mountain</div>
+            <div class="fc" onclick="toggleFilter(this)">Beginner</div>
+          </div>
+          <div class="sort-bar"><span class="sort-cnt">8 models available</span><span class="sort-sel">Sort: Price ↑ ▾</span></div>
+          <div class="prod-card" onclick="goTo(3)">
+            <div class="prod-img">🎿</div>
+            <div class="prod-inf"><div class="prod-name">Pack Ski Pro</div><div class="prod-tags"><span class="tag tag-navy">All-Mountain</span><span class="tag tag-gray">Intermediate+</span></div><div class="prod-sizes">170 · 177 · 184 · 191 cm</div><div class="prod-pf"><div class="prod-price">From $385/pr</div><div class="prod-arr">›</div></div></div>
+          </div>
+          <div class="prod-card" onclick="goTo(3)" style="opacity:0.85">
+            <div class="prod-img" style="background:linear-gradient(155deg,#6B1010,#3D0A0A)">🎿</div>
+            <div class="prod-inf"><div class="prod-name">Pack Ski Race</div><div class="prod-tags"><span class="tag tag-red">Racing</span><span class="tag tag-gray">Advanced</span></div><div class="prod-sizes">177 · 184 cm</div><div class="prod-pf"><div class="prod-price">From $445/pr</div><div class="prod-arr">›</div></div></div>
+          </div>
+          <div class="prod-card" onclick="goTo(3)" style="opacity:0.85">
+            <div class="prod-img" style="background:linear-gradient(155deg,#0D4060,#071A28)">🎿</div>
+            <div class="prod-inf"><div class="prod-name">Pack Ski Powder</div><div class="prod-tags"><span class="tag tag-navy">Powder</span><span class="tag tag-green">All Levels</span></div><div class="prod-sizes">177 · 184 · 191 cm</div><div class="prod-pf"><div class="prod-price">From $395/pr</div><div class="prod-arr">›</div></div></div>
+          </div>
+          <div class="prod-card" onclick="goTo(3)" style="opacity:0.85">
+            <div class="prod-img" style="background:linear-gradient(155deg,#2D4A1A,#182810)">🎿</div>
+            <div class="prod-inf"><div class="prod-name">Pack Ski Backcountry</div><div class="prod-tags"><span class="tag tag-green">Backcountry</span><span class="tag tag-gray">Advanced</span></div><div class="prod-sizes">184 · 191 cm</div><div class="prod-pf"><div class="prod-price">From $419/pr</div><div class="prod-arr">›</div></div></div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
+          <div class="bni"><div class="bni-ico on">📋</div><div class="bni-lbl on">Catalog</div></div>
+          <div class="bni" onclick="goTo(4)"><div class="bni-ico">🛒</div><div class="bni-lbl">Orders</div></div>
+          <div class="bni" onclick="goTo(7)"><div class="bni-ico">🔔</div><div class="bni-lbl">Alerts</div></div>
+          <div class="bni" onclick="goTo(6)"><div class="bni-ico">👤</div><div class="bni-lbl">Profile</div></div>
+        </div>
+      </div>
+
+      <!-- ══ S4: ORDER CUSTOMIZATION ══ -->
+      <div class="screen" id="s4">
+        <div class="sb" style="background:#0C1C2E;color:rgba(255,255,255,0.65)"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="app-hdr" style="background:#0C1C2E;padding-bottom:0"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div></div>
+        <div class="prod-hero">
+          <div class="ph-img">🎿</div>
+          <div><div class="ph-name">Pack Ski Pro</div><div class="ph-sub">All-Mountain Performance Ski</div><div class="ph-tags"><span class="ph-tag">All-Mountain</span><span class="ph-tag">Intermediate+</span><span class="ph-tag">Men's / Women's</span></div></div>
+        </div>
+        <div class="scr-body" style="padding-top:14px">
+          <div class="sec-lbl">Select Length</div>
+          <div class="size-grid" id="sizeGrid">
+            <div class="sz-btn" onclick="selectSize(this,385,467)"><div class="sz-v">170</div><div class="sz-u">cm</div></div>
+            <div class="sz-btn sel" onclick="selectSize(this,385,467)"><div class="sz-v">177</div><div class="sz-u">cm</div></div>
+            <div class="sz-btn" onclick="selectSize(this,390,472)"><div class="sz-v">184</div><div class="sz-u">cm</div></div>
+            <div class="sz-btn" onclick="selectSize(this,395,477)"><div class="sz-v">191</div><div class="sz-u">cm</div></div>
+          </div>
+          <div class="sec-lbl">Binding Configuration</div>
+          <div class="bind-opts">
+            <div class="bind-opt" onclick="selectBinding(this,'flat')">
+              <div class="radio"><div></div></div>
+              <div class="bind-inf"><div class="bind-name">Flat — No Bindings</div><div class="bind-sub">Ski only, dealer installs bindings</div></div>
+              <div class="bind-price" id="flatPrice">$385</div>
+            </div>
+            <div class="bind-opt sel" onclick="selectBinding(this,'bindings')">
+              <div class="radio sel"><div class="radio-dot"></div></div>
+              <div class="bind-inf"><div class="bind-name">With Bindings</div><div class="bind-sub">Pre-mounted Look NX 10 bindings</div></div>
+              <div class="bind-price" id="bindPrice">$467</div>
+            </div>
+          </div>
+          <div class="sec-lbl">Order Quantity (pairs)</div>
+          <div class="qty-row">
+            <div class="qty-btn" onclick="changeQty(-1)">−</div>
+            <div class="qty-val" id="qtyVal">12</div>
+            <div class="qty-btn" onclick="changeQty(1)">+</div>
+            <div class="qty-hint">Min. order: 4 pairs</div>
+          </div>
+          <div class="sum-mini">
+            <div class="sum-row"><div class="sum-lbl">Model</div><div class="sum-val" id="sumModel">Pack Ski Pro 177cm</div></div>
+            <div class="sum-row"><div class="sum-lbl">Configuration</div><div class="sum-val" id="sumConfig">With Bindings</div></div>
+            <div class="sum-row"><div class="sum-lbl">Unit Price</div><div class="sum-val" id="sumUnit">$467/pair</div></div>
+            <div class="sum-row"><div class="sum-lbl">Quantity</div><div class="sum-val" id="sumQty">12 pairs</div></div>
+            <div class="div"></div>
+            <div class="sum-row sum-total"><div class="sum-lbl">Subtotal</div><div class="sum-val" id="sumTotal">$5,604</div></div>
+          </div>
+          <button class="btn btn-primary" onclick="goTo(4)">Add to Order &nbsp;+</button>
+        </div>
+      </div>
+
+      <!-- ══ S5: CART ══ -->
+      <div class="screen" id="s5">
+        <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="app-hdr"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div><div class="hdr-title" style="text-align:center">My Order</div><div style="font-size:11px;font-weight:600;color:#B22222;cursor:pointer">Save</div></div>
+        <div class="scr-body" style="padding-top:4px">
+          <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px">2 items in cart</div>
+          <div class="cart-item">
+            <div class="ci-hdr"><div class="ci-ico">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Pro</div><div class="ci-spec">177cm · With Bindings · Men's</div></div><div class="ci-rm">✕</div></div>
+            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn">−</div><div class="ci-qval">12</div><div class="ci-qbtn">+</div></div><div class="ci-price">$5,604</div></div>
+          </div>
+          <div class="cart-item">
+            <div class="ci-hdr"><div class="ci-ico" style="background:linear-gradient(145deg,#6B1010,#3D0A0A)">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Race</div><div class="ci-spec">184cm · Flat (No Bindings)</div></div><div class="ci-rm">✕</div></div>
+            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn">−</div><div class="ci-qval">6</div><div class="ci-qbtn">+</div></div><div class="ci-price">$2,670</div></div>
+          </div>
+          <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
+          <div class="cart-totals">
+            <div class="tot-row"><div class="tot-lbl">Subtotal (18 pairs)</div><div class="tot-val">$8,274</div></div>
+            <div class="tot-row tot-disc"><div class="tot-lbl">Bulk Discount</div><div class="tot-val">— Not yet eligible</div></div>
+            <div class="tot-row"><div class="tot-lbl">Shipping</div><div class="tot-val">Calculated at checkout</div></div>
+            <div class="div"></div>
+            <div class="tot-row tot-grand"><div class="tot-lbl">Est. Total</div><div class="tot-val">$8,274</div></div>
+          </div>
+          <button class="btn btn-primary" onclick="goTo(5)">Proceed to Checkout &nbsp;→</button>
+          <div style="height:8px"></div>
+          <button class="btn btn-ghost" onclick="goTo(2)">+ Continue Shopping</button>
+        </div>
+        <div class="bnav">
+          <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
+          <div class="bni" onclick="goTo(2)"><div class="bni-ico">📋</div><div class="bni-lbl">Catalog</div></div>
+          <div class="bni"><div class="bni-ico on">🛒</div><div class="bni-lbl on">Cart (2)</div></div>
+          <div class="bni" onclick="goTo(7)"><div class="bni-ico">🔔</div><div class="bni-lbl">Alerts</div></div>
+          <div class="bni" onclick="goTo(6)"><div class="bni-ico">👤</div><div class="bni-lbl">Profile</div></div>
+        </div>
+      </div>
+
+      <!-- ══ S6: CHECKOUT & SCHEDULING ══ -->
+      <div class="screen" id="s6">
+        <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="app-hdr"><div class="hdr-back" onclick="goTo(4)">‹ Cart</div><div class="hdr-title">Checkout</div></div>
+        <div class="scr-body" style="padding-top:4px">
+          <div class="co-summary"><div class="cos-ico">🛒</div><div class="cos-inf"><div class="cos-ttl">Order Summary</div><div class="cos-sub">2 items · 18 pairs total</div></div><div class="cos-tot">$8,274</div></div>
+          <div class="sec-lbl">Shipping Method</div>
+          <div class="ship-opt sel" onclick="selectShipping(this)"><span class="ship-ico">🚚</span><div class="ship-inf"><div class="ship-name">Freight (Standard)</div><div class="ship-eta">Est. 5–8 business days</div></div><div class="ship-cost">Cost passed to customer</div></div>
+          <div class="ship-opt" onclick="selectShipping(this)"><span class="ship-ico">📦</span><div class="ship-inf"><div class="ship-name">2-Day Shipping</div><div class="ship-eta">Guaranteed 2 business days</div></div><div class="ship-cost">+$285</div></div>
+          <div class="ship-opt" onclick="selectShipping(this)"><span class="ship-ico">✈️</span><div class="ship-inf"><div class="ship-name">Overnight</div><div class="ship-eta">Next business day delivery</div></div><div class="ship-cost">+$520</div></div>
+          <div class="ship-opt disabled"><span class="ship-ico">🤝</span><div class="ship-inf"><div class="ship-name">Hand Delivery</div><div class="ship-eta">Local customers only (&lt;2hr from Packwood, WA)</div></div><div class="ship-cost na">Not available for your location</div></div>
+          <div class="sec-lbl" style="margin-top:13px">Requested Delivery Date</div>
+          <div class="date-pick"><span class="dp-ico">📅</span><span class="dp-val">March 15, 2025</span><span class="dp-arr">▾</span></div>
+          <div class="sec-lbl">Ship To</div>
+          <div class="addr-card"><span class="addr-ico">📍</span><div class="addr-inf"><div class="addr-name">Mountain Gear Co. — Denver</div><div class="addr-line">1234 Ski Lane, Denver, CO 80202</div></div><div class="addr-chg">Change</div></div>
+          <div class="sec-lbl">Payment Terms</div>
+          <div class="pay-card"><span class="pay-ico">💳</span><div class="pay-inf"><div class="pay-lbl">Account Terms</div><div class="pay-val">Open Invoice · Net 30</div><div class="pay-lnk">View full account terms ›</div></div></div>
+          <button class="btn btn-primary" onclick="showSuccess()">Confirm Order &nbsp;✓</button>
+        </div>
+      </div>
+
+      <!-- ══ S7: USER PROFILE ══ -->
+      <div class="screen" id="s7">
+        <div class="sb" style="background:#0C1C2E;color:rgba(255,255,255,0.65)"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="prof-hero"><div class="prof-av">🏬</div><div><div class="prof-name">Mountain Gear Co.</div><span class="prof-type">Retailer</span><div class="prof-loc">📍 Denver, Colorado</div></div></div>
+        <div class="scr-body" style="padding-top:13px">
+          <div class="card">
+            <div class="card-hdr"><div class="card-ttl">Account Details</div></div>
+            <div class="card-body">
+              <div class="inf-row"><div class="ir-ico">🔖</div><div class="ir-inf"><div class="ir-lbl">Account Number</div><div class="ir-val">PSC-RET-0847</div></div></div>
+              <div class="inf-row"><div class="ir-ico">📅</div><div class="ir-inf"><div class="ir-lbl">Member Since</div><div class="ir-val">January 2019</div></div></div>
+              <div class="inf-row" onclick="goTo(8)" style="cursor:pointer"><div class="ir-ico">👤</div><div class="ir-inf"><div class="ir-lbl">Account Rep</div><div class="ir-val">Sarah Johnson · (509) 555-0142</div></div><div class="ir-arr">›</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hdr"><div class="card-ttl">Credit &amp; Payments</div></div>
+            <div class="card-body">
+              <div class="inf-row"><div class="ir-ico">💰</div><div class="ir-inf"><div class="ir-lbl">Credit Limit</div><div class="ir-val">$75,000</div><div class="cr-bar-wrap"><div class="cr-bar-track"><div class="cr-bar-fill"></div></div><div class="cr-bar-lbls"><span>$0</span><span>$45,200 available</span><span>$75K</span></div></div></div></div>
+              <div class="div"></div>
+              <div class="ir-lbl" style="padding:0 0 6px">Payment Preference</div>
+              <div class="pay-pref-row"><div class="pref-btn sel" onclick="selectPref(this)">● Open Invoice</div><div class="pref-btn" onclick="selectPref(this)">○ Balance Forward</div></div>
+              <div style="font-size:11px;font-weight:400;color:#8898A8">Current terms: Net 30 days</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hdr"><div class="card-ttl">Account Options</div></div>
+            <div class="card-body" style="padding-bottom:6px">
+              <div class="menu-item" onclick="goTo(4)"><div class="mi-ico b">📋</div><div class="mi-lbl">Order History</div><div class="mi-arr">›</div></div>
+              <div class="menu-item"><div class="mi-ico g">📄</div><div class="mi-lbl">Download Statements</div><div class="mi-arr">›</div></div>
+              <div class="menu-item"><div class="mi-ico b">🏪</div><div class="mi-lbl">Manage Locations</div><div class="mi-arr">›</div></div>
+              <div class="menu-item" onclick="goTo(0)"><div class="mi-ico r">🚪</div><div class="mi-lbl" style="color:#B22222">Sign Out</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
+          <div class="bni" onclick="goTo(2)"><div class="bni-ico">📋</div><div class="bni-lbl">Catalog</div></div>
+          <div class="bni" onclick="goTo(4)"><div class="bni-ico">🛒</div><div class="bni-lbl">Orders</div></div>
+          <div class="bni" onclick="goTo(7)"><div class="bni-ico">🔔</div><div class="bni-lbl">Alerts</div></div>
+          <div class="bni"><div class="bni-ico on">👤</div><div class="bni-lbl on">Profile</div></div>
+        </div>
+      </div>
+
+      <!-- ══ S8: NOTIFICATIONS ══ -->
+      <div class="screen" id="s8">
+        <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="app-hdr"><div class="hdr-title">Notifications</div><div class="hdr-ico">⚙</div></div>
+        <div class="scr-body" style="padding-top:4px">
+          <div class="notif-promo">
+            <div class="np-tag">Active Promotion</div>
+            <div class="np-ttl">Pre-Season Discount — 2025</div>
+            <div class="np-sub">Save 2.5% on orders over $40,000. Combine models to reach the threshold. Valid through March 31, 2025.</div>
+            <div class="np-cta" onclick="goTo(2)">Browse Catalog &nbsp;→</div>
+          </div>
+          <div class="ntabs" id="notifTabs">
+            <div class="ntab on" onclick="selectTab(this)">All</div>
+            <div class="ntab" onclick="selectTab(this)">Orders</div>
+            <div class="ntab" onclick="selectTab(this)">Promos</div>
+            <div class="ntab" onclick="selectTab(this)">Account</div>
+          </div>
+          <div class="n-date">Today</div>
+          <div class="notif-item"><div class="ni-dot"></div><div class="ni-ico ord">📦</div><div class="ni-inf"><div class="ni-ttl">Order #PSC-2025-089 Shipped</div><div class="ni-sub">Pack Ski Pro Series (24 units) is on its way. Est. delivery March 5.</div></div><div class="ni-time">2h ago</div></div>
+          <div class="notif-item"><div class="ni-dot"></div><div class="ni-ico prm">📣</div><div class="ni-inf"><div class="ni-ttl">New 2025 Backcountry Series</div><div class="ni-sub">3 new Pack Ski models now in stock — 184cm and 191cm available.</div></div><div class="ni-time">5h ago</div></div>
+          <div class="n-date">Yesterday</div>
+          <div class="notif-item"><div class="ni-ico alr">💳</div><div class="ni-inf"><div class="ni-ttl">Invoice #INV-0284 Due Soon</div><div class="ni-sub">$5,604 due on March 1, 2025. Pay online or contact your rep.</div></div><div class="ni-time">1d ago</div></div>
+          <div class="notif-item"><div class="ni-ico ok">✅</div><div class="ni-inf"><div class="ni-ttl">Order #PSC-2025-086 Processing</div><div class="ni-sub">Pack Ski Race Series (12 units) entered production queue.</div></div><div class="ni-time">2d ago</div></div>
+        </div>
+        <div class="bnav">
+          <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
+          <div class="bni" onclick="goTo(2)"><div class="bni-ico">📋</div><div class="bni-lbl">Catalog</div></div>
+          <div class="bni" onclick="goTo(4)"><div class="bni-ico">🛒</div><div class="bni-lbl">Orders</div></div>
+          <div class="bni"><div class="bni-ico on">🔔</div><div class="bni-lbl on">Alerts</div></div>
+          <div class="bni" onclick="goTo(6)"><div class="bni-ico">👤</div><div class="bni-lbl">Profile</div></div>
+        </div>
+      </div>
+
+      <!-- ══ S9: CUSTOMER SUPPORT ══ -->
+      <div class="screen" id="s9">
+        <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
+        <div class="app-hdr"><div class="hdr-title">Support</div><div class="hdr-ico">📞</div></div>
+        <div class="scr-body" style="padding-top:4px">
+          <div class="rep-card">
+            <div class="rep-hdr"><div class="rep-av">👩‍💼</div><div><div class="rep-name">Sarah Johnson</div><div class="rep-title">PSC Account Manager</div><div class="rep-status"><div class="rep-dot"></div><div class="rep-stxt">Available · Mon–Fri 8am–5pm PT</div></div></div></div>
+            <div class="rep-btns">
+              <div class="rep-btn"><div class="rep-btn-ico">📞</div><div class="rep-btn-lbl">Call Rep</div></div>
+              <div class="rep-btn"><div class="rep-btn-ico">✉️</div><div class="rep-btn-lbl">Email Rep</div></div>
+              <div class="rep-btn" style="border-color:#B22222"><div class="rep-btn-ico">💬</div><div class="rep-btn-lbl" style="color:#B22222">Live Chat</div></div>
+            </div>
+          </div>
+          <div class="sec-lbl">Quick Help</div>
+          <div class="qh-item" onclick="goTo(1)"><span class="qh-ico">📍</span><span class="qh-lbl">Track My Order</span><span class="qh-arr">›</span></div>
+          <div class="qh-item"><span class="qh-ico">↩️</span><span class="qh-lbl">Return / Exchange Policy</span><span class="qh-arr">›</span></div>
+          <div class="qh-item" onclick="goTo(6)"><span class="qh-ico">💳</span><span class="qh-lbl">Billing &amp; Invoices</span><span class="qh-arr">›</span></div>
+          <div class="qh-item" onclick="goTo(2)"><span class="qh-ico">🎿</span><span class="qh-lbl">Product Information</span><span class="qh-arr">›</span></div>
+          <div class="sec-lbl" style="margin-top:13px">Live Chat</div>
+          <div class="chat-box">
+            <div class="chat-hdr"><div class="chat-hdr-dot"></div><div class="chat-hdr-lbl">Sarah Johnson · PSC Support</div></div>
+            <div class="chat-msgs">
+              <div><div class="chat-sender">PSC Support</div><div class="chat-bub bub-in">Hi Mountain Gear Co.! 👋 How can I help you today?</div></div>
+              <div><div class="chat-sender out">You</div><div class="chat-bub bub-out">I need to check on order #PSC-2025-086</div></div>
+              <div><div class="chat-sender">PSC Support</div><div class="chat-bub bub-in">I'll look that up right now — one moment please! 🔍</div></div>
+            </div>
+            <div class="chat-input-bar"><div class="chat-inp">Type a message…</div><div class="chat-send">➤</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /phone-screen -->
+  </div><!-- /phone-frame -->
+</main>
+
+<!-- ── ANNOTATIONS PANEL ── -->
+<aside class="anno-panel" id="annoPanel"></aside>
+
+</div><!-- /app-container -->
+
+<script>
+const screens = [
+  { id:'s1', num:'01', name:'Login', tag:'Screen 1 of 9 — Authentication', desc:'The entry point for authorized PSC dealer accounts. Differentiates between Retailer and Wholesaler account types to tailor the subsequent experience.', features:['Retailer vs. Wholesaler selector sets role-based permissions from the start','Company email authentication ties sign-in to the dealer\'s business identity','PSC mountain branding reinforces the premium alpine identity of the Pack Ski line','No "Create Account" option — all accounts are pre-provisioned by PSC sales reps','Footer disclaimer makes clear this portal is for authorized B2B dealers only'], note:'B2B Context: Consumer sign-up is deliberately absent. All accounts are provisioned by PSC reps before first login.' },
+  { id:'s2', num:'02', name:'Home Dashboard', tag:'Screen 2 of 9 — Main Hub', desc:'The command center for daily dealer operations. At-a-glance credit status, order tracking, and promotional offers — eliminating the need to call a sales rep for routine updates.', features:['Credit Available and Open Orders stat cards replace phone-based status inquiries','Quick Actions (New Order, Track, Support) surface the three most common daily tasks','Recent Orders list shows live status badges for each outstanding order','Promo banner drives awareness of active bulk discount thresholds ($20K / $40K)','Tap avatar or Profile nav to jump to account settings'], note:'Revenue Impact: The promo banner directly supports the tiered discount program, motivating dealers to reach higher order values digitally.' },
+  { id:'s3', num:'03', name:'Product Catalog', tag:'Screen 3 of 9 — Order Selection', desc:'Browse and filter PSC\'s full alpine ski lineup by terrain type, gender, and proficiency level. Each product card taps into the Order Customization screen.', features:['Filter chips map to PSC\'s product taxonomy: terrain, gender, proficiency level','Product cards show available sizes, price range, and relevant tags at a glance','Search bar enables quick model lookup for accounts managing multiple SKUs','Cards animate on hover with a subtle lift for a polished, modern feel','Tapping any product card opens the Order Customization screen for that model'], note:'Product Rule: Each orderable item = specific model + specific length. Catalog leads into Order Customization for quantity and binding selection.' },
+  { id:'s4', num:'04', name:'Order Customization', tag:'Screen 4 of 9 — Configure & Price', desc:'Configure a specific ski order by selecting length, binding option, and quantity. The live price summary updates in real time as selections change.', features:['Length selector shows all available sizes — tapping one updates the price summary','Binding toggle: Flat (no bindings, $385/pair) or With Bindings ($467/pair)','Quantity stepper enforces the 4-pair minimum order policy with a hint label','Live order summary recalculates unit price × quantity instantly','Add to Order CTA proceeds to cart — dealers can continue adding more models'], note:'Pricing: Flat vs. with-bindings pricing is surfaced here. Bulk discount thresholds are revealed in the Cart once multiple items are added.' },
+  { id:'s5', num:'05', name:'Cart', tag:'Screen 5 of 9 — Review & Discount', desc:'Aggregates all configured items and surfaces PSC\'s tiered bulk discount eligibility. The hint bar motivates dealers to increase order size to reach thresholds.', features:['Multi-item cart shows full spec for each line item with inline quantity editing','Green discount hint calculates exactly how much more spend unlocks the next tier','Running total, discount status, and shipping estimate before checkout','Remove item (✕) and quantity adjustment without leaving cart view','"Continue Shopping" keeps dealers in the catalog flow to grow their order value'], note:'Discount Logic: 1.5% on orders >$20K · 2.5% on orders >$40K. The hint bar calculates the gap dynamically so dealers always know their threshold distance.' },
+  { id:'s6', num:'06', name:'Checkout & Scheduling', tag:'Screen 6 of 9 — Shipping & Delivery', desc:'Select shipping method, request a delivery date, confirm ship-to location, and review payment terms. Fully replaces the manual phone-based scheduling process.', features:['Four shipping options with ETAs: Freight, 2-Day, Overnight, Hand Delivery','Hand Delivery greyed out for accounts outside the 2-hour drive from Packwood, WA','Delivery date picker lets dealers align orders with their inventory schedules','Ship-to address supports multi-location accounts (e.g., Denver + Breckenridge)','Payment terms displayed read-only — set by PSC based on customer relationship','Confirm Order triggers a success overlay and routes back to the dashboard'], note:'Shipping Rule: All shipping costs are passed to the customer. Costs are displayed before confirmation so there are no billing surprises.' },
+  { id:'s7', num:'07', name:'User Profile', tag:'Screen 7 of 9 — Account Management', desc:'Centralizes dealer account information — credit status, payment preferences, rep contact, and account history — eliminating routine account inquiry calls.', features:['Account number and member-since date establish the long-term relationship context','Assigned rep card with click-through to Support screen for direct contact','Credit utilization bar visualizes available credit vs. total limit ($45,200 / $75,000)','Payment preference toggle: Open Invoice or Balance Forward — PSC\'s two billing modes','Sign Out returns to the Login screen; Order History links to the Cart/Orders view'], note:'B2B Design: Payment terms (Net 30) are displayed read-only. Dealers cannot self-modify terms, preserving PSC\'s relationship-based pricing model.' },
+  { id:'s8', num:'08', name:'Notifications', tag:'Screen 8 of 9 — Alerts & Promotions', desc:'Consolidates order status updates, promotional announcements, and account alerts. The top promo banner is a direct marketing channel for PSC\'s sales team.', features:['Persistent promo banner drives awareness of discount thresholds and seasonal campaigns','Tab filter (All / Orders / Promos / Account) surfaces relevant notification types fast','Unread red dots distinguish new notifications from already-seen items','Order notifications include order number, description, and estimated delivery dates','Invoice due-soon alerts reduce late payments by surfacing upcoming invoices proactively'], note:'Marketing Channel: The promo banner gives PSC a direct in-app channel to 100+ retail accounts — replacing mass emails with contextual, timely messaging.' },
+  { id:'s9', num:'09', name:'Customer Support', tag:'Screen 9 of 9 — Dealer Support', desc:'Direct access to the assigned PSC account manager via call, email, or live chat. Quick-help tiles handle common questions without requiring rep contact.', features:['Named account rep (Sarah Johnson) with real-time availability status shown upfront','Three contact channels: Call, Email, Live Chat — giving dealers flexibility by urgency','Quick Help tiles for Track Order, Returns, Billing, and Product Info reduce rep workload','Live chat with threaded conversation history maintains context across sessions','Quick Help items link directly to relevant app screens (Catalog, Profile, Orders)'], note:'Operational Benefit: Live chat and quick-help tiles are expected to reduce inbound phone volume significantly, freeing reps for higher-value interactions.' }
+];
+
+// ── Order customization state ──
+let selectedSize = { label: '177cm', flatPrice: 385, bindPrice: 467 };
+let selectedBinding = 'bindings';
+let qty = 12;
+
+function updateSummary() {
+  const price = selectedBinding === 'bindings' ? selectedSize.bindPrice : selectedSize.flatPrice;
+  const total = price * qty;
+  document.getElementById('sumModel').textContent = 'Pack Ski Pro ' + selectedSize.label;
+  document.getElementById('sumConfig').textContent = selectedBinding === 'bindings' ? 'With Bindings' : 'Flat — No Bindings';
+  document.getElementById('sumUnit').textContent = '$' + price + '/pair';
+  document.getElementById('sumQty').textContent = qty + ' pairs';
+  document.getElementById('sumTotal').textContent = '$' + total.toLocaleString();
+}
+
+function selectSize(el, flat, bind) {
+  document.querySelectorAll('#sizeGrid .sz-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedSize = { label: el.querySelector('.sz-v').textContent + 'cm', flatPrice: flat, bindPrice: bind };
+  document.getElementById('flatPrice').textContent = '$' + flat;
+  document.getElementById('bindPrice').textContent = '$' + bind;
+  updateSummary();
+}
+
+function selectBinding(el, type) {
+  document.querySelectorAll('.bind-opt').forEach(b => {
+    b.classList.remove('sel');
+    b.querySelector('.radio').classList.remove('sel');
+    b.querySelector('.radio').innerHTML = '<div></div>';
+  });
+  el.classList.add('sel');
+  el.querySelector('.radio').classList.add('sel');
+  el.querySelector('.radio').innerHTML = '<div class="radio-dot"></div>';
+  selectedBinding = type;
+  updateSummary();
+}
+
+function changeQty(delta) {
+  qty = Math.max(4, qty + delta);
+  document.getElementById('qtyVal').textContent = qty;
+  updateSummary();
+}
+
+// ── Shipping selection ──
+function selectShipping(el) {
+  if (el.classList.contains('disabled')) return;
+  document.querySelectorAll('.ship-opt').forEach(s => s.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ── Notification tabs ──
+function selectTab(el) {
+  document.querySelectorAll('#notifTabs .ntab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// ── Filter chips ──
+function toggleFilter(el) {
+  document.querySelectorAll('#filterChips .fc').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// ── Account type toggle (login) ──
+function selectAcctType(el) {
+  document.querySelectorAll('.acct-type-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ── Payment preference toggle ──
+function selectPref(el) {
+  el.closest('.pay-pref-row').querySelectorAll('.pref-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ── Order success ──
+function showSuccess() {
+  const overlay = document.getElementById('successOverlay');
+  overlay.classList.add('visible');
+}
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('visible');
+  goTo(1);
+}
+
+// ── Screen navigation ──
+let current = 0;
+
+function renderAnnotations(idx) {
+  const s = screens[idx];
+  const feats = s.features.map(f => `<div class="anno-feat"><div class="anno-dot"></div><div class="anno-feat-txt">${f}</div></div>`).join('');
+  document.getElementById('annoPanel').innerHTML = `
+    <div class="anno-screen-tag">${s.tag}</div>
+    <div class="anno-screen-name">${s.name}</div>
+    <div class="anno-desc">${s.desc}</div>
+    <div class="anno-section">Key Features</div>${feats}
+    <div class="anno-divider"></div>
+    <div class="anno-note"><div class="anno-note-lbl">Design Note</div><div class="anno-note-txt">${s.note}</div></div>`;
+}
+
+function renderDots() {
+  document.getElementById('navDots').innerHTML = screens.map((_, i) =>
+    `<div class="nav-dot ${i === current ? 'active' : ''}" onclick="goTo(${i})"></div>`).join('');
+}
+
+function goTo(idx) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screens[idx].id).classList.add('active');
+  document.querySelectorAll('.screen-btn')[idx].classList.add('active');
+  // Hide success overlay when navigating away
+  document.getElementById('successOverlay').classList.remove('visible');
+  current = idx;
+  document.getElementById('navLabel').textContent = screens[idx].num + ' / ' + screens[idx].name;
+  document.getElementById('screenCount').textContent = 'Screen ' + (idx + 1) + ' of 9';
+  renderDots();
+  renderAnnotations(idx);
+  document.querySelectorAll('.screen-btn')[idx].scrollIntoView({ block: 'nearest' });
+}
+
+function next() { goTo((current + 1) % screens.length); }
+function prev() { goTo((current - 1 + screens.length) % screens.length); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft') prev();
+});
+
+// Init
+renderDots();
+renderAnnotations(0);
+</script>
+</body>
+</html>
