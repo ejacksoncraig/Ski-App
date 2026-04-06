@@ -238,7 +238,8 @@ html, body {
 .qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 .qty-btn { width: 34px; height: 34px; border-radius: 9px; border: 1.5px solid #D0DAE8; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #1A2740; cursor: pointer; transition: all 0.12s; user-select: none; }
 .qty-btn:hover { border-color: #1B3A5C; color: #1B3A5C; }
-.qty-val { font-size: 20px; font-weight: 700; color: #1A2740; min-width: 36px; text-align: center; letter-spacing: -0.03em; }
+.qty-val { font-size: 20px; font-weight: 700; color: #1A2740; width: 48px; text-align: center; letter-spacing: -0.03em; border: none; background: transparent; outline: none; -moz-appearance: textfield; appearance: textfield; padding: 0; }
+.qty-val::-webkit-outer-spin-button, .qty-val::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .qty-hint { font-size: 10px; font-weight: 400; color: #A8B8C8; }
 
 .sum-mini { background: #fff; border-radius: 12px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 13px; }
@@ -263,7 +264,8 @@ html, body {
 .ci-qctrl { display: flex; align-items: center; gap: 10px; background: #EEF2F8; border-radius: 9px; padding: 5px 10px; }
 .ci-qbtn { font-size: 16px; font-weight: 700; color: #3A5070; cursor: pointer; user-select: none; transition: color 0.12s; }
 .ci-qbtn:hover { color: #B22222; }
-.ci-qval { font-size: 14px; font-weight: 700; color: #1A2740; min-width: 22px; text-align: center; letter-spacing: -0.02em; }
+.ci-qval { font-size: 14px; font-weight: 700; color: #1A2740; width: 30px; text-align: center; letter-spacing: -0.02em; border: none; background: transparent; outline: none; -moz-appearance: textfield; appearance: textfield; padding: 0; }
+.ci-qval::-webkit-outer-spin-button, .ci-qval::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .ci-price { font-size: 15px; font-weight: 700; color: #1A2740; letter-spacing: -0.02em; }
 
 .cart-totals { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 10px; }
@@ -658,7 +660,7 @@ html, body {
           <div class="sec-lbl">Order Quantity (pairs)</div>
           <div class="qty-row">
             <div class="qty-btn" onclick="changeQty(-1)">−</div>
-            <div class="qty-val" id="qtyVal">12</div>
+            <input class="qty-val" id="qtyVal" type="number" value="12" min="4" oninput="onQtyInput(this)" onblur="onQtyBlur(this)">
             <div class="qty-btn" onclick="changeQty(1)">+</div>
             <div class="qty-hint">Min. order: 4 pairs</div>
           </div>
@@ -682,11 +684,11 @@ html, body {
           <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px">2 items in cart</div>
           <div class="cart-item">
             <div class="ci-hdr"><div class="ci-ico">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Pro</div><div class="ci-spec">177cm · With Bindings · Men's</div></div><div class="ci-rm">✕</div></div>
-            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn">−</div><div class="ci-qval">12</div><div class="ci-qbtn">+</div></div><div class="ci-price">$5,604</div></div>
+            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(this,-1)">−</div><input class="ci-qval" type="number" value="12" min="1" oninput="onCartQtyInput(this)" onblur="onCartQtyBlur(this)"><div class="ci-qbtn" onclick="changeCartQty(this,1)">+</div></div><div class="ci-price">$5,604</div></div>
           </div>
           <div class="cart-item">
             <div class="ci-hdr"><div class="ci-ico" style="background:linear-gradient(145deg,#6B1010,#3D0A0A)">🎿</div><div class="ci-det"><div class="ci-name">Pack Ski Race</div><div class="ci-spec">184cm · Flat (No Bindings)</div></div><div class="ci-rm">✕</div></div>
-            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn">−</div><div class="ci-qval">6</div><div class="ci-qbtn">+</div></div><div class="ci-price">$2,670</div></div>
+            <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(this,-1)">−</div><input class="ci-qval" type="number" value="6" min="1" oninput="onCartQtyInput(this)" onblur="onCartQtyBlur(this)"><div class="ci-qbtn" onclick="changeCartQty(this,1)">+</div></div><div class="ci-price">$2,670</div></div>
           </div>
           <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
           <div class="cart-totals">
@@ -896,9 +898,40 @@ function selectBinding(el, type) {
 }
 
 function changeQty(delta) {
-  qty = Math.max(4, qty + delta);
-  document.getElementById('qtyVal').textContent = qty;
+  const input = document.getElementById('qtyVal');
+  qty = Math.max(4, (parseInt(input.value) || qty) + delta);
+  input.value = qty;
   updateSummary();
+}
+
+function onQtyInput(input) {
+  const val = parseInt(input.value);
+  if (!isNaN(val) && val >= 4) {
+    qty = val;
+    updateSummary();
+  }
+}
+
+function onQtyBlur(input) {
+  const val = parseInt(input.value);
+  qty = isNaN(val) || val < 4 ? 4 : val;
+  input.value = qty;
+  updateSummary();
+}
+
+function changeCartQty(btn, delta) {
+  const input = btn.parentElement.querySelector('.ci-qval');
+  const val = Math.max(1, (parseInt(input.value) || 1) + delta);
+  input.value = val;
+}
+
+function onCartQtyInput(input) {
+  // allow free typing; clamp on blur
+}
+
+function onCartQtyBlur(input) {
+  const val = parseInt(input.value);
+  input.value = isNaN(val) || val < 1 ? 1 : val;
 }
 
 // ── Shipping selection ──
