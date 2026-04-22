@@ -284,6 +284,31 @@ html, body {
 /* ═══════════════════════════════
    SCREEN 6 — CHECKOUT
 ═══════════════════════════════ */
+/* Cart tabs */
+.cart-tabs { display: flex; margin-bottom: 12px; border-radius: 10px; overflow: hidden; border: 1.5px solid #D0DAE8; }
+.ct { flex: 1; padding: 9px 0; text-align: center; font-size: 12px; font-weight: 600; color: #6A8090; background: #fff; cursor: pointer; transition: all 0.12s; }
+.ct.on { background: #1B3A5C; color: #fff; }
+/* Order history */
+.oh-card { background: #fff; border-radius: 13px; border: 1px solid #E0E8F0; margin-bottom: 9px; overflow: hidden; }
+.oh-hdr { padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.oh-meta { flex: 1; }
+.oh-id { font-size: 13px; font-weight: 700; color: #1A2740; }
+.oh-date { font-size: 10px; font-weight: 400; color: #8898A8; margin-top: 1px; }
+.oh-body { padding: 0 14px 12px; border-top: 1px solid #EEF2F8; }
+.oh-item { padding: 7px 0; border-bottom: 1px solid #F4F7FA; display: flex; justify-content: space-between; align-items: center; }
+.oh-item:last-child { border-bottom: none; }
+.oh-item-name { font-size: 12px; font-weight: 600; color: #1A2740; }
+.oh-item-spec { font-size: 10px; color: #8898A8; margin-top: 1px; }
+.oh-item-price { font-size: 12px; font-weight: 600; color: #1B3A5C; white-space: nowrap; }
+.oh-totals { background: #F8FAFD; border-radius: 8px; padding: 10px 12px; margin-top: 10px; }
+.oh-tot-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 11px; color: #6A8090; }
+.oh-tot-row.grand { font-weight: 700; color: #1A2740; font-size: 13px; border-top: 1px solid #E0E8F0; margin-top: 5px; padding-top: 7px; }
+.oh-actions { display: flex; gap: 8px; margin-top: 10px; }
+.oh-action { flex: 1; padding: 8px; border-radius: 8px; text-align: center; font-size: 11px; font-weight: 600; cursor: pointer; }
+/* Checkout totals */
+.co-totals { background: #fff; border-radius: 12px; border: 1px solid #E0E8F0; padding: 13px; margin-bottom: 12px; }
+.co-tot-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 12px; color: #6A8090; }
+.co-tot-row.co-grand { font-size: 15px; font-weight: 700; color: #1A2740; border-top: 1px solid #E0E8F0; margin-top: 5px; padding-top: 8px; }
 .co-summary { background: #1B3A5C; border-radius: 13px; padding: 13px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
 .cos-ico { font-size: 22px; }
 .cos-inf { flex: 1; }
@@ -505,9 +530,8 @@ html, body {
       <div class="success-overlay" id="successOverlay">
         <div class="success-ring">✓</div>
         <div class="success-title">Order Confirmed!</div>
-        <div class="success-order">#PSC-2025-094</div>
-        <div class="success-sub">Your order has been received and is being processed. You'll get a confirmation notification shortly.</div>
-        <div class="success-eta">Est. delivery: March 15, 2025</div>
+        <div class="success-order" id="successOrderNum">#PSC-2026-094</div>
+        <div class="success-sub">Your order has been received and is being processed. You'll receive a confirmation notification shortly.</div>
         <button class="btn btn-primary" style="width:200px" onclick="closeSuccess()">Back to Home</button>
       </div>
 
@@ -566,15 +590,11 @@ html, body {
           </div>
           <div class="card">
             <div class="card-hdr"><div class="card-ttl">Recent Orders</div><div class="card-lnk" onclick="goTo(4)">View All</div></div>
-            <div class="card-body">
-              <div class="ord-row"><div class="ord-ico">📦</div><div class="ord-inf"><div class="ord-id">#PSC-2025-089</div><div class="ord-desc">Pack Ski Pro Series · 24 units</div></div><div class="ord-meta"><span class="badge bdg-ship">Shipped</span><span class="ord-date">Est. Mar 5</span></div></div>
-              <div class="ord-row"><div class="ord-ico">⚙️</div><div class="ord-inf"><div class="ord-id">#PSC-2025-086</div><div class="ord-desc">Pack Ski Race Series · 12 units</div></div><div class="ord-meta"><span class="badge bdg-proc">Processing</span><span class="ord-date">Mar 10</span></div></div>
-              <div class="ord-row"><div class="ord-ico">🕐</div><div class="ord-inf"><div class="ord-id">#PSC-2025-081</div><div class="ord-desc">Pack Ski Powder · 8 units</div></div><div class="ord-meta"><span class="badge bdg-pend">Pending</span><span class="ord-date">Mar 15</span></div></div>
-            </div>
+            <div class="card-body" id="homeRecentOrders"></div>
           </div>
           <div class="promo-banner" onclick="goTo(2)">
             <div class="pb-ico">🏔</div>
-            <div><div class="pb-ttl">Pre-Season Sale Active</div><div class="pb-sub">2.5% off orders over $40,000<br>Valid through March 31, 2025</div></div>
+            <div><div class="pb-ttl">Pre-Season Sale Active</div><div class="pb-sub">2.5% off orders over $40,000<br>Valid through December 31, 2026</div></div>
             <div class="pb-arr">›</div>
           </div>
         </div>
@@ -677,19 +697,28 @@ html, body {
         <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
         <div class="app-hdr"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div><div class="hdr-title" style="text-align:center">My Order</div><div style="font-size:11px;font-weight:600;color:#B22222;cursor:pointer">Save</div></div>
         <div class="scr-body" style="padding-top:4px">
-          <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px" id="cartItemCount">2 items in cart</div>
-          <div id="cartItemsContainer"></div>
-          <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt" id="discHintTxt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
-          <div class="cart-totals">
-            <div class="tot-row"><div class="tot-lbl" id="cartSubtotalLbl">Subtotal (18 pairs)</div><div class="tot-val" id="cartSubtotalVal">$8,274</div></div>
-            <div class="tot-row tot-disc"><div class="tot-lbl">Bulk Discount</div><div class="tot-val" id="cartDiscVal">— Not yet eligible</div></div>
-            <div class="tot-row"><div class="tot-lbl">Shipping</div><div class="tot-val">Calculated at checkout</div></div>
-            <div class="div"></div>
-            <div class="tot-row tot-grand"><div class="tot-lbl">Est. Total</div><div class="tot-val" id="cartTotalVal">$8,274</div></div>
+          <div class="cart-tabs">
+            <div class="ct on" data-tab="cart" onclick="switchCartTab('cart')">Current Order</div>
+            <div class="ct" data-tab="history" onclick="switchCartTab('history')">Order History</div>
           </div>
-          <button class="btn btn-primary" onclick="goTo(5)">Proceed to Checkout &nbsp;→</button>
-          <div style="height:8px"></div>
-          <button class="btn btn-ghost" onclick="goTo(2)">+ Continue Shopping</button>
+          <div id="cartView">
+            <div style="font-size:11px;font-weight:500;color:#8898A8;margin-bottom:10px" id="cartItemCount">2 items in cart</div>
+            <div id="cartItemsContainer"></div>
+            <div class="disc-hint"><span class="dh-ico">💡</span><span class="dh-txt" id="discHintTxt">Add $11,726 more to unlock 1.5% bulk discount ($124 savings)</span></div>
+            <div class="cart-totals">
+              <div class="tot-row"><div class="tot-lbl" id="cartSubtotalLbl">Subtotal (18 pairs)</div><div class="tot-val" id="cartSubtotalVal">$8,274</div></div>
+              <div class="tot-row tot-disc"><div class="tot-lbl">Bulk Discount</div><div class="tot-val" id="cartDiscVal">— Not yet eligible</div></div>
+              <div class="tot-row"><div class="tot-lbl">Shipping</div><div class="tot-val">Calculated at checkout</div></div>
+              <div class="div"></div>
+              <div class="tot-row tot-grand"><div class="tot-lbl">Est. Total</div><div class="tot-val" id="cartTotalVal">$8,274</div></div>
+            </div>
+            <button class="btn btn-primary" onclick="openCheckout()">Proceed to Checkout &nbsp;→</button>
+            <div style="height:8px"></div>
+            <button class="btn btn-ghost" onclick="goTo(2)">+ Continue Shopping</button>
+          </div>
+          <div id="historyView" style="display:none">
+            <div id="orderHistoryContainer"></div>
+          </div>
         </div>
         <div class="bnav">
           <div class="bni" onclick="goTo(1)"><div class="bni-ico">🏠</div><div class="bni-lbl">Home</div></div>
@@ -705,19 +734,25 @@ html, body {
         <div class="sb"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
         <div class="app-hdr"><div class="hdr-back" onclick="goTo(4)">‹ Cart</div><div class="hdr-title">Checkout</div></div>
         <div class="scr-body" style="padding-top:4px">
-          <div class="co-summary"><div class="cos-ico">🛒</div><div class="cos-inf"><div class="cos-ttl">Order Summary</div><div class="cos-sub">2 items · 18 pairs total</div></div><div class="cos-tot">$8,274</div></div>
+          <div class="co-summary"><div class="cos-ico">🛒</div><div class="cos-inf"><div class="cos-ttl">Order Summary</div><div class="cos-sub" id="coSumSub">— items</div></div><div class="cos-tot" id="coSumTot">—</div></div>
           <div class="sec-lbl">Shipping Method</div>
-          <div class="ship-opt sel" onclick="selectShipping(this)"><span class="ship-ico">🚚</span><div class="ship-inf"><div class="ship-name">Freight (Standard)</div><div class="ship-eta">Est. 5–8 business days</div></div><div class="ship-cost">Cost passed to customer</div></div>
-          <div class="ship-opt" onclick="selectShipping(this)"><span class="ship-ico">📦</span><div class="ship-inf"><div class="ship-name">2-Day Shipping</div><div class="ship-eta">Guaranteed 2 business days</div></div><div class="ship-cost">+$285</div></div>
-          <div class="ship-opt" onclick="selectShipping(this)"><span class="ship-ico">✈️</span><div class="ship-inf"><div class="ship-name">Overnight</div><div class="ship-eta">Next business day delivery</div></div><div class="ship-cost">+$520</div></div>
-          <div class="ship-opt disabled"><span class="ship-ico">🤝</span><div class="ship-inf"><div class="ship-name">Hand Delivery</div><div class="ship-eta">Local customers only (&lt;2hr from Packwood, WA)</div></div><div class="ship-cost na">Not available for your location</div></div>
-          <div class="sec-lbl" style="margin-top:13px">Requested Delivery Date</div>
-          <div class="date-pick"><span class="dp-ico">📅</span><span class="dp-val">March 15, 2025</span><span class="dp-arr">▾</span></div>
+          <div class="ship-opt sel" data-ship="freight" onclick="selectShipping(this)"><span class="ship-ico">🚚</span><div class="ship-inf"><div class="ship-name">Freight (Standard)</div><div class="ship-eta">Est. 5–8 business days</div></div><div class="ship-cost">Billed separately</div></div>
+          <div class="ship-opt" data-ship="twoday" onclick="selectShipping(this)"><span class="ship-ico">📦</span><div class="ship-inf"><div class="ship-name">2-Day Shipping</div><div class="ship-eta">Guaranteed 2 business days</div></div><div class="ship-cost">+$285</div></div>
+          <div class="ship-opt" data-ship="overnight" onclick="selectShipping(this)"><span class="ship-ico">✈️</span><div class="ship-inf"><div class="ship-name">Overnight</div><div class="ship-eta">Next business day delivery</div></div><div class="ship-cost">+$520</div></div>
+          <div class="ship-opt disabled" data-ship="hand"><span class="ship-ico">🤝</span><div class="ship-inf"><div class="ship-name">Hand Delivery</div><div class="ship-eta">Local customers only (&lt;2hr from Packwood, WA)</div></div><div class="ship-cost na">Not available for your location</div></div>
           <div class="sec-lbl">Ship To</div>
           <div class="addr-card"><span class="addr-ico">📍</span><div class="addr-inf"><div class="addr-name">Mountain Gear Co. — Denver</div><div class="addr-line">1234 Ski Lane, Denver, CO 80202</div></div><div class="addr-chg">Change</div></div>
           <div class="sec-lbl">Payment Terms</div>
           <div class="pay-card"><span class="pay-ico">💳</span><div class="pay-inf"><div class="pay-lbl">Account Terms</div><div class="pay-val">Open Invoice · Net 30</div><div class="pay-lnk">View full account terms ›</div></div></div>
-          <button class="btn btn-primary" onclick="showSuccess()">Confirm Order &nbsp;✓</button>
+          <div class="sec-lbl">Order Total</div>
+          <div class="co-totals">
+            <div class="co-tot-row"><span>Subtotal</span><span id="coSubtotal">—</span></div>
+            <div class="co-tot-row" id="coDiscRow" style="display:none"><span id="coDiscLbl">Bulk Discount</span><span id="coDiscount">—</span></div>
+            <div class="co-tot-row"><span>Sales Tax (8.5% — CO)</span><span id="coTax">—</span></div>
+            <div class="co-tot-row"><span>Shipping</span><span id="coShipping">Billed separately</span></div>
+            <div class="co-tot-row co-grand"><span>Est. Total</span><span id="coTotal">—</span></div>
+          </div>
+          <button class="btn btn-primary" onclick="placeOrder()">Confirm Order &nbsp;✓</button>
         </div>
       </div>
 
@@ -747,7 +782,7 @@ html, body {
           <div class="card">
             <div class="card-hdr"><div class="card-ttl">Account Options</div></div>
             <div class="card-body" style="padding-bottom:6px">
-              <div class="menu-item" onclick="goTo(4)"><div class="mi-ico b">📋</div><div class="mi-lbl">Order History</div><div class="mi-arr">›</div></div>
+              <div class="menu-item" onclick="openOrderHistory()"><div class="mi-ico b">📋</div><div class="mi-lbl">Order History</div><div class="mi-arr">›</div></div>
               <div class="menu-item"><div class="mi-ico g">📄</div><div class="mi-lbl">Download Statements</div><div class="mi-arr">›</div></div>
               <div class="menu-item"><div class="mi-ico b">🏪</div><div class="mi-lbl">Manage Locations</div><div class="mi-arr">›</div></div>
               <div class="menu-item" onclick="goTo(0)"><div class="mi-ico r">🚪</div><div class="mi-lbl" style="color:#B22222">Sign Out</div></div>
@@ -770,8 +805,8 @@ html, body {
         <div class="scr-body" style="padding-top:4px">
           <div class="notif-promo">
             <div class="np-tag">Active Promotion</div>
-            <div class="np-ttl">Pre-Season Discount — 2025</div>
-            <div class="np-sub">Save 2.5% on orders over $40,000. Combine models to reach the threshold. Valid through March 31, 2025.</div>
+            <div class="np-ttl">Pre-Season Discount — 2026</div>
+            <div class="np-sub">Save 2.5% on orders over $40,000. Combine models to reach the threshold. Valid through December 31, 2026.</div>
             <div class="np-cta" onclick="goTo(2)">Browse Catalog &nbsp;→</div>
           </div>
           <div class="ntabs" id="notifTabs">
@@ -1028,11 +1063,228 @@ function updateCartTotals() {
   document.getElementById('cartTotalVal').textContent = '$' + total.toLocaleString();
 }
 
+// ── Order history data ──
+let orderHistory = [
+  {
+    id: '#PSC-2026-089', date: 'Mar 15, 2026',
+    items: [{ name: 'Pack Ski Pro', spec: "177cm · With Bindings", qty: 24, unitPrice: 467 }],
+    subtotal: 11208, discountAmt: 0, discountRate: 0, tax: 953,
+    shippingLabel: 'Freight', shippingCost: 0, total: 12161, pairs: 24,
+    status: 'Shipped', statusClass: 'bdg-ship',
+  },
+  {
+    id: '#PSC-2026-086', date: 'Mar 10, 2026',
+    items: [{ name: 'Pack Ski Race', spec: '184cm · Flat (No Bindings)', qty: 12, unitPrice: 455 }],
+    subtotal: 5460, discountAmt: 0, discountRate: 0, tax: 464,
+    shippingLabel: '2-Day Shipping', shippingCost: 285, total: 6209, pairs: 12,
+    status: 'Processing', statusClass: 'bdg-proc',
+  },
+  {
+    id: '#PSC-2026-081', date: 'Mar 5, 2026',
+    items: [{ name: 'Pack Ski Powder', spec: '184cm · With Bindings', qty: 8, unitPrice: 487 }],
+    subtotal: 3896, discountAmt: 0, discountRate: 0, tax: 331,
+    shippingLabel: 'Freight', shippingCost: 0, total: 4227, pairs: 8,
+    status: 'Pending', statusClass: 'bdg-pend',
+  },
+];
+
 // ── Shipping selection ──
+const shippingOptions = {
+  freight:   { label: 'Freight (Standard)', cost: 0 },
+  twoday:    { label: '2-Day Shipping',     cost: 285 },
+  overnight: { label: 'Overnight',          cost: 520 },
+};
+let currentShipping = shippingOptions.freight;
+
 function selectShipping(el) {
   if (el.classList.contains('disabled')) return;
   document.querySelectorAll('.ship-opt').forEach(s => s.classList.remove('sel'));
   el.classList.add('sel');
+  currentShipping = shippingOptions[el.dataset.ship] || shippingOptions.freight;
+  updateCheckoutTotals();
+}
+
+// ── Open checkout ──
+function openCheckout() {
+  if (cartItems.length === 0) return;
+  const totalPairs = cartItems.reduce((s, i) => s + i.qty, 0);
+  const subtotal   = cartItems.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+  let discountRate = 0;
+  if (subtotal >= 40000) discountRate = 0.025;
+  else if (subtotal >= 20000) discountRate = 0.015;
+  const afterDiscount = subtotal - Math.round(subtotal * discountRate);
+  document.getElementById('coSumSub').textContent = cartItems.length + ' item' + (cartItems.length !== 1 ? 's' : '') + ' · ' + totalPairs + ' pairs total';
+  document.getElementById('coSumTot').textContent = '$' + afterDiscount.toLocaleString();
+  // reset shipping to freight
+  currentShipping = shippingOptions.freight;
+  document.querySelectorAll('.ship-opt').forEach(s => s.classList.remove('sel'));
+  document.querySelector('.ship-opt[data-ship="freight"]').classList.add('sel');
+  updateCheckoutTotals();
+  goTo(5);
+}
+
+function updateCheckoutTotals() {
+  const subtotal = cartItems.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+  let discountRate = 0;
+  if (subtotal >= 40000) discountRate = 0.025;
+  else if (subtotal >= 20000) discountRate = 0.015;
+  const discountAmt   = Math.round(subtotal * discountRate);
+  const afterDiscount = subtotal - discountAmt;
+  const tax           = Math.round(afterDiscount * 0.085);
+  const shipCost      = currentShipping.cost;
+  const total         = afterDiscount + tax + shipCost;
+
+  document.getElementById('coSubtotal').textContent = '$' + afterDiscount.toLocaleString();
+  document.getElementById('coTax').textContent      = '$' + tax.toLocaleString();
+  if (shipCost > 0) {
+    document.getElementById('coShipping').textContent = '$' + shipCost.toLocaleString();
+  } else {
+    document.getElementById('coShipping').textContent = 'Billed separately';
+  }
+  document.getElementById('coTotal').textContent = '$' + total.toLocaleString() + (shipCost === 0 ? '*' : '');
+
+  const discRow = document.getElementById('coDiscRow');
+  if (discountAmt > 0) {
+    discRow.style.display = '';
+    document.getElementById('coDiscLbl').textContent = 'Bulk Discount (' + (discountRate * 100).toFixed(1) + '%)';
+    document.getElementById('coDiscount').textContent = '−$' + discountAmt.toLocaleString();
+  } else {
+    discRow.style.display = 'none';
+  }
+}
+
+// ── Place order ──
+function placeOrder() {
+  if (cartItems.length === 0) return;
+  const subtotal = cartItems.reduce((s, i) => s + i.unitPrice * i.qty, 0);
+  let discountRate = 0;
+  if (subtotal >= 40000) discountRate = 0.025;
+  else if (subtotal >= 20000) discountRate = 0.015;
+  const discountAmt   = Math.round(subtotal * discountRate);
+  const afterDiscount = subtotal - discountAmt;
+  const tax           = Math.round(afterDiscount * 0.085);
+  const shipCost      = currentShipping.cost;
+  const total         = afterDiscount + tax + shipCost;
+  const pairs         = cartItems.reduce((s, i) => s + i.qty, 0);
+
+  const num = String(90 + orderHistory.length).padStart(3, '0');
+  const orderNum = '#PSC-2026-' + num;
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const date = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+
+  orderHistory.unshift({
+    id: orderNum, date,
+    items: cartItems.map(i => ({ name: i.name, spec: i.spec, qty: i.qty, unitPrice: i.unitPrice })),
+    subtotal, discountAmt, discountRate, tax,
+    shippingLabel: currentShipping.label, shippingCost: shipCost,
+    total, pairs,
+    status: 'Processing', statusClass: 'bdg-proc',
+  });
+
+  cartItems = [];
+  renderCart();
+  renderHomeOrders();
+
+  document.getElementById('successOrderNum').textContent = orderNum;
+  document.getElementById('successOverlay').classList.add('visible');
+}
+
+// ── Order success ──
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('visible');
+  switchCartTab('cart');
+  goTo(1);
+}
+
+// ── Render home recent orders ──
+function renderHomeOrders() {
+  const container = document.getElementById('homeRecentOrders');
+  if (!container) return;
+  const recent = orderHistory.slice(0, 3);
+  if (recent.length === 0) {
+    container.innerHTML = '<div style="padding:12px 0;text-align:center;color:#8898A8;font-size:12px">No orders yet.</div>';
+    return;
+  }
+  const statusIcons = { Shipped: '📦', Processing: '⚙️', Pending: '🕐', Delivered: '✅' };
+  container.innerHTML = recent.map(o => {
+    const desc = o.items.map(i => i.name + ' ×' + i.qty).join(', ');
+    const ico = statusIcons[o.status] || '📋';
+    return `<div class="ord-row" onclick="openOrderHistory()">
+      <div class="ord-ico">${ico}</div>
+      <div class="ord-inf"><div class="ord-id">${o.id}</div><div class="ord-desc">${desc}</div></div>
+      <div class="ord-meta"><span class="badge ${o.statusClass}">${o.status}</span><span class="ord-date">${o.date}</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ── Order history tab ──
+function switchCartTab(tab) {
+  document.querySelectorAll('.ct').forEach(t => t.classList.remove('on'));
+  document.querySelector('.ct[data-tab="' + tab + '"]').classList.add('on');
+  const cartView    = document.getElementById('cartView');
+  const historyView = document.getElementById('historyView');
+  if (tab === 'cart') {
+    cartView.style.display = '';
+    historyView.style.display = 'none';
+  } else {
+    cartView.style.display = 'none';
+    historyView.style.display = '';
+    renderOrderHistory();
+  }
+}
+
+function openOrderHistory() {
+  switchCartTab('history');
+  goTo(4);
+}
+
+function renderOrderHistory() {
+  const container = document.getElementById('orderHistoryContainer');
+  if (orderHistory.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:32px 0;color:#8898A8;font-size:13px;font-weight:500">No orders placed yet.</div>';
+    return;
+  }
+  container.innerHTML = orderHistory.map((o, i) => {
+    const itemsHtml = o.items.map(item => `
+      <div class="oh-item">
+        <div><div class="oh-item-name">${item.name}</div><div class="oh-item-spec">${item.spec} · ${item.qty} pair${item.qty !== 1 ? 's' : ''}</div></div>
+        <div class="oh-item-price">$${(item.unitPrice * item.qty).toLocaleString()}</div>
+      </div>`).join('');
+    const discRow = o.discountAmt > 0
+      ? `<div class="oh-tot-row"><span>Bulk Discount (${(o.discountRate*100).toFixed(1)}%)</span><span>−$${o.discountAmt.toLocaleString()}</span></div>` : '';
+    const shipDisplay = o.shippingCost > 0 ? '$' + o.shippingCost.toLocaleString() : 'Billed separately';
+    return `<div class="oh-card">
+      <div class="oh-hdr" onclick="toggleOrderDetail(${i})">
+        <div class="oh-meta"><div class="oh-id">${o.id}</div><div class="oh-date">${o.date} · ${o.pairs} pair${o.pairs !== 1 ? 's' : ''}</div></div>
+        <span class="badge ${o.statusClass}">${o.status}</span>
+        <span style="font-size:14px;color:#A0B4C4;margin-left:6px;transition:transform 0.15s;display:inline-block" id="ohArrow${i}">›</span>
+      </div>
+      <div class="oh-body" id="ohBody${i}" style="display:none">
+        ${itemsHtml}
+        <div class="oh-totals">
+          <div class="oh-tot-row"><span>Subtotal</span><span>$${o.subtotal.toLocaleString()}</span></div>
+          ${discRow}
+          <div class="oh-tot-row"><span>Sales Tax (8.5%)</span><span>$${o.tax.toLocaleString()}</span></div>
+          <div class="oh-tot-row"><span>Shipping (${o.shippingLabel})</span><span>${shipDisplay}</span></div>
+          <div class="oh-tot-row grand"><span>Total</span><span>$${o.total.toLocaleString()}${o.shippingCost === 0 ? '*' : ''}</span></div>
+          ${o.shippingCost === 0 ? '<div style="font-size:9px;color:#A8B8C8;margin-top:4px">* Freight billed separately</div>' : ''}
+        </div>
+        <div class="oh-actions">
+          <div class="oh-action" style="background:#E6EEF8;color:#1B3A5C">Reorder</div>
+          <div class="oh-action" style="background:#E6F6EC;color:#1A7840">Track</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleOrderDetail(i) {
+  const body  = document.getElementById('ohBody' + i);
+  const arrow = document.getElementById('ohArrow' + i);
+  const open  = body.style.display !== 'none';
+  body.style.display  = open ? 'none' : 'block';
+  arrow.style.transform = open ? '' : 'rotate(90deg)';
 }
 
 // ── Notification tabs ──
@@ -1299,16 +1551,6 @@ function selectPref(el) {
   el.classList.add('sel');
 }
 
-// ── Order success ──
-function showSuccess() {
-  const overlay = document.getElementById('successOverlay');
-  overlay.classList.add('visible');
-}
-function closeSuccess() {
-  document.getElementById('successOverlay').classList.remove('visible');
-  goTo(1);
-}
-
 // ── Screen navigation ──
 let current = 0;
 
@@ -1357,6 +1599,7 @@ renderDots();
 renderAnnotations(0);
 renderCart();
 renderCatalog();
+renderHomeOrders();
 </script>
 </body>
 </html>
