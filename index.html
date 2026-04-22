@@ -649,7 +649,7 @@ html, body {
         <div class="sb" style="background:#0C1C2E;color:rgba(255,255,255,0.65)"><span>9:41</span><span class="sb-icons">▲ ◼ 100%</span></div>
         <div class="app-hdr" style="background:#0C1C2E;padding-bottom:0"><div class="hdr-back" onclick="goTo(2)">‹ Catalog</div></div>
         <div class="prod-hero">
-          <div class="ph-img" id="heroImg">🎿</div>
+          <div class="ph-img" id="heroImg"></div>
           <div><div class="ph-name" id="heroName">Pack Ski Pro</div><div class="ph-sub" id="heroSub">All-Mountain Performance Ski</div><div class="ph-tags" id="heroTags"><span class="ph-tag">All-Mountain</span><span class="ph-tag">Intermediate+</span><span class="ph-tag">Men's / Women's</span></div></div>
         </div>
         <div class="scr-body" style="padding-top:14px">
@@ -958,7 +958,7 @@ function renderCart() {
       const lineTotal = item.unitPrice * item.qty;
       const iconStyle = item.color ? ` style="background:${item.color}"` : '';
       return `<div class="cart-item">
-        <div class="ci-hdr"><div class="ci-ico"${iconStyle}>🎿</div><div class="ci-det"><div class="ci-name">${item.name}</div><div class="ci-spec">${item.spec}</div></div><div class="ci-rm" onclick="removeCartItem(${i})">✕</div></div>
+        <div class="ci-hdr"><div class="ci-ico"${iconStyle}>${skiSvg('88%')}</div><div class="ci-det"><div class="ci-name">${item.name}</div><div class="ci-spec">${item.spec}</div></div><div class="ci-rm" onclick="removeCartItem(${i})">✕</div></div>
         <div class="ci-qp"><div class="ci-qctrl"><div class="ci-qbtn" onclick="changeCartQty(${i},-1)">−</div><input class="ci-qval" type="number" value="${item.qty}" min="1" oninput="onCartQtyInput(${i},this)" onblur="onCartQtyBlur(${i},this)"><div class="ci-qbtn" onclick="changeCartQty(${i},1)">+</div></div><div class="ci-price">$${lineTotal.toLocaleString()}</div></div>
       </div>`;
     }).join('');
@@ -1293,6 +1293,27 @@ function selectTab(el) {
   el.classList.add('on');
 }
 
+// ── Ski illustration (inline SVG) ──
+function skiSvg(scale) {
+  scale = scale || '82%';
+  return `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:${scale};height:${scale};display:block">
+    <g transform="translate(24,7) rotate(-10 6 40)">
+      <path d="M0,9 Q3,0 6,0 Q9,0 12,9 L11,62 Q9,68 6,68 Q3,68 1,62 Z" fill="rgba(255,255,255,0.97)" stroke="rgba(0,0,0,0.08)" stroke-width="0.6"/>
+      <rect x="3" y="3.5" width="6" height="5" fill="#B22222" rx="0.8"/>
+      <rect x="2" y="30" width="8" height="3.2" fill="#1a1a1a" rx="0.6"/>
+      <rect x="2" y="37" width="8" height="3.2" fill="#1a1a1a" rx="0.6"/>
+      <rect x="5.5" y="14" width="1" height="44" fill="rgba(0,0,0,0.12)"/>
+    </g>
+    <g transform="translate(44,7) rotate(10 6 40)">
+      <path d="M0,9 Q3,0 6,0 Q9,0 12,9 L11,62 Q9,68 6,68 Q3,68 1,62 Z" fill="rgba(255,255,255,0.97)" stroke="rgba(0,0,0,0.08)" stroke-width="0.6"/>
+      <rect x="3" y="3.5" width="6" height="5" fill="#B22222" rx="0.8"/>
+      <rect x="2" y="30" width="8" height="3.2" fill="#1a1a1a" rx="0.6"/>
+      <rect x="2" y="37" width="8" height="3.2" fill="#1a1a1a" rx="0.6"/>
+      <rect x="5.5" y="14" width="1" height="44" fill="rgba(0,0,0,0.12)"/>
+    </g>
+  </svg>`;
+}
+
 // ── Product catalog data ──
 const products = [
   {
@@ -1492,7 +1513,7 @@ function renderCatalog() {
     const imgStyle = p.color ? ` style="background:${p.color}"` : '';
     const tagsHtml = p.tags.map(t => `<span class="tag ${t.cls}">${t.label}</span>`).join('');
     return `<div class="prod-card" onclick="openProduct('${p.id}')">
-      <div class="prod-img"${imgStyle}>🎿</div>
+      <div class="prod-img"${imgStyle}>${skiSvg('82%')}</div>
       <div class="prod-inf"><div class="prod-name">${p.name}</div><div class="prod-tags">${tagsHtml}</div><div class="prod-sizes">${sizeStr}</div><div class="prod-pf"><div class="prod-price">From $${minPrice}/pr</div><div class="prod-arr">›</div></div></div>
     </div>`;
   }).join('');
@@ -1511,6 +1532,7 @@ function openProduct(productId) {
   document.getElementById('heroTags').innerHTML = p.tags.map(t => `<span class="ph-tag">${t.label}</span>`).join('');
   const heroImg = document.getElementById('heroImg');
   heroImg.style.background = p.color || '';
+  heroImg.innerHTML = skiSvg('88%');
 
   const defaultIdx = p.defaultSizeIdx || 0;
   const defSize = p.sizes[defaultIdx];
